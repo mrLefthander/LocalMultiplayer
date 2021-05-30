@@ -20,7 +20,12 @@ public class PlayerMovement : MonoBehaviour
 
   private void Update()
   {
-    _rigidbody.velocity = new Vector2(Input.GetAxis("Horizontal") * _movementSpeed, _rigidbody.velocity.y);
+    _rigidbody.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * _movementSpeed, _rigidbody.velocity.y);
+
+    if (Input.GetButtonDown("Jump"))
+    {
+      _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
+    }
   }
 
 
