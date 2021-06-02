@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
   private const float SMALL_JUMP_MULTIPLIER = 0.3f;
+  private const float JUMP_GRACE_PERIOD = 0.1f;
 
   [SerializeField]
   private float _movementSpeed = 10f;
@@ -13,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
   private float _jumpForce = 21f;
   
   private float _horizontalInput;
+  private float _gracePeriodTimer;
+  private float _wasGroundedTimer;
 
   private PlayerCollisionDetection _playerCollisionDetection;
   private Rigidbody2D _rigidbody;
@@ -25,7 +28,14 @@ public class PlayerMovement : MonoBehaviour
 
   private void Update()
   {
+    _gracePeriodTimer -= Time.deltaTime;    
+    _wasGroundedTimer -= Time.deltaTime;
     _rigidbody.velocity = new Vector2(_horizontalInput * _movementSpeed, _rigidbody.velocity.y);
+
+    if (_playerCollisionDetection.IsGrounded())
+      _wasGroundedTimer = JUMP_GRACE_PERIOD;
+
+    Jump();
   }
 
   public void OnMoveInput(InputAction.CallbackContext context)
@@ -35,25 +45,32 @@ public class PlayerMovement : MonoBehaviour
 
   public void OnJumpInput(InputAction.CallbackContext context)
   {
-    Jump(context);
+    if (context.performed)
+    {
+      _gracePeriodTimer = JUMP_GRACE_PERIOD;
+    }
 
-    SmallJump(context);
+    if (!context.canceled || _rigidbody.velocity.y <= 0f)
+    {
+      return;
+    }
+
+    SmallJump();
   }
 
-  private void Jump(InputAction.CallbackContext context)
+  private void Jump()
   {
-    if (context.performed && _playerCollisionDetection.IsGrounded())
+    if (_gracePeriodTimer > 0f && _wasGroundedTimer > 0f)
     {
       _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
+      _gracePeriodTimer = 0f;
+      _wasGroundedTimer = 0f;
     }
   }
 
-  private void SmallJump(InputAction.CallbackContext context)
+  private void SmallJump()
   {
-    if (context.canceled && !_playerCollisionDetection.IsGrounded() && _rigidbody.velocity.y > 0f)
-    {
-      _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y * SMALL_JUMP_MULTIPLIER);
-    }
+    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y * SMALL_JUMP_MULTIPLIER);
   }
 
 }
