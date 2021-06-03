@@ -10,7 +10,7 @@ public class JoinPlayerKeyboard2 : MonoBehaviour
 
   private void Update()
   {
-    if (!_hasPlayerLoaded)
+    if (!_hasPlayerLoaded && !GameManager.instance.IsMaxPlayers())
     {
       if(Keyboard.current.jKey.wasPressedThisFrame || Keyboard.current.lKey.wasPressedThisFrame || Keyboard.current.rightShiftKey.wasPressedThisFrame ||
         Keyboard.current.iKey.wasPressedThisFrame || Keyboard.current.kKey.wasPressedThisFrame)

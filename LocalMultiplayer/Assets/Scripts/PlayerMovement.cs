@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
   
   private void Start()
   {
+    GameManager.instance.AddPlayer(this);
     _playerCollisionDetection = GetComponent<PlayerCollisionDetection>();
     _rigidbody = GetComponent<Rigidbody2D>();
   }
@@ -57,8 +58,6 @@ public class PlayerMovement : MonoBehaviour
     Move();
     Jump();
   }
-
-
 
   public void OnMoveInput(InputAction.CallbackContext context)
   {
