@@ -12,13 +12,20 @@ public class PlayerMovement : MonoBehaviour
   private float _movementSpeed = 10f;
   [SerializeField]
   private float _jumpForce = 21f;
-  
+  [SerializeField]
+  private GameObject _playerSpawnEffect;
+
   private float _horizontalInput;
   private float _gracePeriodTimer;
   private float _wasGroundedTimer;
 
   private PlayerCollisionDetection _playerCollisionDetection;
   private Rigidbody2D _rigidbody;
+
+  private void OnEnable()
+  {
+    Instantiate(_playerSpawnEffect, transform.position, Quaternion.identity);
+  }
 
   private void Start()
   {
@@ -28,13 +35,13 @@ public class PlayerMovement : MonoBehaviour
 
   private void Update()
   {
-    _gracePeriodTimer -= Time.deltaTime;    
+    _gracePeriodTimer -= Time.deltaTime;
     _wasGroundedTimer -= Time.deltaTime;
-    _rigidbody.velocity = new Vector2(_horizontalInput * _movementSpeed, _rigidbody.velocity.y);
-
+    
     if (_playerCollisionDetection.IsGrounded())
       _wasGroundedTimer = JUMP_GRACE_PERIOD;
 
+    Move();
     Jump();
   }
 
@@ -54,7 +61,6 @@ public class PlayerMovement : MonoBehaviour
     {
       return;
     }
-
     SmallJump();
   }
 
@@ -71,6 +77,11 @@ public class PlayerMovement : MonoBehaviour
   private void SmallJump()
   {
     _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y * SMALL_JUMP_MULTIPLIER);
+  }
+
+  private void Move()
+  {
+    _rigidbody.velocity = new Vector2(_horizontalInput * _movementSpeed, _rigidbody.velocity.y);
   }
 
 }
