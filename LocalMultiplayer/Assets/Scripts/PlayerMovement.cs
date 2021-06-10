@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
   [SerializeField]
   private float _jumpForce = 21f;
   [SerializeField]
-  private bool _isKeyboard2 = false;
+  private GameObject _playerSpawnEffect;
 
   private float _horizontalInput;
   private float _gracePeriodTimer;
@@ -21,10 +21,14 @@ public class PlayerMovement : MonoBehaviour
 
   private PlayerCollisionDetection _playerCollisionDetection;
   private Rigidbody2D _rigidbody;
-  
+
+  private void OnEnable()
+  {
+    Instantiate(_playerSpawnEffect, transform.position, Quaternion.identity);
+  }
+
   private void Start()
   {
-    GameManager.instance.AddPlayer(this);
     _playerCollisionDetection = GetComponent<PlayerCollisionDetection>();
     _rigidbody = GetComponent<Rigidbody2D>();
   }
@@ -33,27 +37,9 @@ public class PlayerMovement : MonoBehaviour
   {
     _gracePeriodTimer -= Time.deltaTime;
     _wasGroundedTimer -= Time.deltaTime;
-
-
+    
     if (_playerCollisionDetection.IsGrounded())
       _wasGroundedTimer = JUMP_GRACE_PERIOD;
-
-    if (_isKeyboard2)
-    {
-      _horizontalInput = 0f;
-
-      if (Keyboard.current.lKey.isPressed)
-        _horizontalInput = 1f;
-
-      if (Keyboard.current.jKey.isPressed)
-        _horizontalInput = -1f;
-
-      if (Keyboard.current.rightShiftKey.wasPressedThisFrame)
-        _gracePeriodTimer = JUMP_GRACE_PERIOD;
-
-      if (Keyboard.current.rightShiftKey.wasReleasedThisFrame && _rigidbody.velocity.y > 0f)
-        SmallJump();
-    }
 
     Move();
     Jump();
@@ -75,7 +61,6 @@ public class PlayerMovement : MonoBehaviour
     {
       return;
     }
-
     SmallJump();
   }
 

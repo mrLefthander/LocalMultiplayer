@@ -133,7 +133,7 @@ Rigidbody2D:
   m_AngularDrag: 0
   m_GravityScale: 5
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementSpeed: 10
   _jumpForce: 21
-  _isKeyboard2: 0
+  _playerSpawnEffect: {fileID: 3647056117896187378, guid: 38dec72b36557fd43b6bde580e4b15bc, type: 3}
 --- !u!114 &7368922559723017575
 MonoBehaviour:
   m_ObjectHideFlags: 0

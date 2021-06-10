@@ -23,6 +23,8 @@ public class PlayerCollisionDetection : MonoBehaviour
   {
     _isGronded = UpdateIsGrounded();
   }
+  
+
 
   private bool UpdateIsGrounded()
   {
