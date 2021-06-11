@@ -123,63 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &174657594
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7368922559723017569, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368922559723017571, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
 --- !u!1 &481605218
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +257,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
     m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 7368922559723017569, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
+  m_PlayerPrefab: {fileID: 3339137521423774210, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0
   m_FixedNumberOfSplitScreens: -1
@@ -361,20 +304,24 @@ MonoBehaviour:
       remapped: 15
     - original: 18
       remapped: 18
+    - original: 19
+      remapped: 19
     - original: 1
       remapped: 1
-  - name: arrows
+  - name: numpad
     routes:
     - original: 37
-      remapped: 63
+      remapped: 92
     - original: 33
-      remapped: 64
+      remapped: 89
     - original: 15
-      remapped: 61
+      remapped: 88
     - original: 18
-      remapped: 62
+      remapped: 90
+    - original: 19
+      remapped: 93
     - original: 1
-      remapped: 84
+      remapped: 77
 --- !u!1 &1416256690
 GameObject:
   m_ObjectHideFlags: 0

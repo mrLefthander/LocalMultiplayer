@@ -22,6 +22,15 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.016666668
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -62,7 +71,7 @@ AnimationClip:
     classID: 212
     script: {fileID: 0}
   - curve:
-    - time: 0
+    - time: 0.016666668
       value: {fileID: -6300022427340494601, guid: 416835bd8608d8c4d86e314b568f159c, type: 3}
     - time: 0.083333336
       value: {fileID: -3061971124352811578, guid: 416835bd8608d8c4d86e314b568f159c, type: 3}
@@ -138,6 +147,15 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.016666668
         value: 1
         inSlope: Infinity
         outSlope: Infinity

@@ -6,25 +6,23 @@ public class PlayerCollisionDetection : MonoBehaviour
   private const float COLLIDER_SIZE_MULTIPLIER_FOR_GROUND_CHECK = 0.98f;
   private const float BOX_CAST_ANGLE = 0f;
 
-
   [SerializeField]
   private LayerMask groundLayerMask;
-  private bool _isGronded;
+
+  public bool IsGrounded { get; private set; }
 
   private Collider2D _collider;
 
 
-  private void Start()
+  private void Awake()
   {
     _collider = GetComponent<Collider2D>();
   }
 
   private void FixedUpdate()
   {
-    _isGronded = UpdateIsGrounded();
+    IsGrounded = UpdateIsGrounded();
   }
-  
-
 
   private bool UpdateIsGrounded()
   {
@@ -33,10 +31,4 @@ public class PlayerCollisionDetection : MonoBehaviour
 
     return raycastHit.collider != null;
   }
-
-  public bool IsGrounded()
-  {
-    return _isGronded;
-  }
-
 }
