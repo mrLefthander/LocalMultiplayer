@@ -99,7 +99,6 @@ GameObject:
   - component: {fileID: 3339137521423774213}
   - component: {fileID: 3339137521423774212}
   - component: {fileID: 3339137521423774218}
-  - component: {fileID: 1664785089919682450}
   - component: {fileID: 3339137521423774217}
   - component: {fileID: 2227582737282375102}
   - component: {fileID: 1114935140425983827}
@@ -393,21 +392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8af35fb4de308a94487d3ac9f277b5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1664785089919682450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3339137521423774210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b152f24aba68cb244bb89182f68f4254, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _heartSprites: []
-  _heartFull: {fileID: 0}
-  _heartEmpty: {fileID: 0}
 --- !u!114 &3339137521423774217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,6 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b152f24aba68cb244bb89182f68f4254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _heartsHolder: {fileID: 6525281888486639439}
   _heartSprites:
   - {fileID: 8521843106677039895}
   - {fileID: 390117351078017249}

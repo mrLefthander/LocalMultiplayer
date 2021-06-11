@@ -8,6 +8,7 @@ public class PlayerAnimations : MonoBehaviour
 {
   private PlayerInputEvents _playerInputEvents;
   private PlayerCollisionDetection _playerCollisionDetection;
+
   private Rigidbody2D _rigidbody;
   private Animator _animator;
 
