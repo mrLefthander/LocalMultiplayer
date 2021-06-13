@@ -7,7 +7,7 @@ public class PlayerCollisionDetection : MonoBehaviour
   private const float BOX_CAST_ANGLE = 0f;
 
   [SerializeField]
-  private LayerMask groundLayerMask;
+  private LayerMask _groundLayerMask;
 
   public bool IsGrounded { get; private set; }
 
@@ -27,7 +27,7 @@ public class PlayerCollisionDetection : MonoBehaviour
   private bool UpdateIsGrounded()
   {
     RaycastHit2D raycastHit = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size * COLLIDER_SIZE_MULTIPLIER_FOR_GROUND_CHECK, BOX_CAST_ANGLE,
-      Vector2.down, _collider.bounds.extents.x, groundLayerMask);
+      Vector2.down, _collider.bounds.extents.x, _groundLayerMask);
 
     return raycastHit.collider != null;
   }
