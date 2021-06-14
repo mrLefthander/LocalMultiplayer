@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
   private const float INVINCIBILITY_TIME = 1f;
+  private const int DEFAULT_DAMAGE_TO_TAKE = 1;
 
   [SerializeField] private Transform _heartsHolder;
   [SerializeField] private SpriteRenderer[] _heartSprites;
@@ -13,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
   private readonly int _maxHealth = 3;
   private int _currentHealth;
   private float _invincibilityTimer;
+
   private PlayerAnimations _playerAnimations;
 
   private void Start()
@@ -50,7 +52,7 @@ public class PlayerHealth : MonoBehaviour
     }
   }
 
-  public void TakeDamage(int amount)
+  public void TakeDamage(int amount = DEFAULT_DAMAGE_TO_TAKE)
   {
     if (_invincibilityTimer > 0f) { return; }
 

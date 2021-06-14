@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
   private const float SMALL_JUMP_VELOCITY_MULTIPLIER = 0.3f;
-  private const float JUMP_GRACE_PERIOD = 0.15f;
+  private const float JUMP_GRACE_PERIOD = 0.1f;
   private const float ON_ATTACK_MOVEMENT_PAUSE_PERIOD = 0.25f;
 
   [SerializeField] private float _movementSpeed = 10f;

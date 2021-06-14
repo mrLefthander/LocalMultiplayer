@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerCollisionDetection : MonoBehaviour
 {
-  private const float COLLIDER_SIZE_MULTIPLIER_FOR_GROUND_CHECK = 0.98f;
   private const float BOX_CAST_ANGLE = 0f;
 
   [SerializeField]
@@ -12,7 +11,6 @@ public class PlayerCollisionDetection : MonoBehaviour
   public bool IsGrounded { get; private set; }
 
   private Collider2D _collider;
-
 
   private void Awake()
   {
@@ -26,8 +24,8 @@ public class PlayerCollisionDetection : MonoBehaviour
 
   private bool UpdateIsGrounded()
   {
-    RaycastHit2D raycastHit = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size * COLLIDER_SIZE_MULTIPLIER_FOR_GROUND_CHECK, BOX_CAST_ANGLE,
-      Vector2.down, _collider.bounds.extents.x, _groundLayerMask);
+    RaycastHit2D raycastHit = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.extents, BOX_CAST_ANGLE,
+      Vector2.down, _collider.bounds.size.y, _groundLayerMask);
 
     return raycastHit.collider != null;
   }
