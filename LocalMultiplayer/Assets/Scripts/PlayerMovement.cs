@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerCollisionDetection))]
@@ -5,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
-  private const float SMALL_JUMP_MULTIPLIER = 0.3f;
+  private const float SMALL_JUMP_VELOCITY_MULTIPLIER = 0.3f;
   private const float JUMP_GRACE_PERIOD = 0.15f;
   private const float ON_ATTACK_MOVEMENT_PAUSE_PERIOD = 0.25f;
 
@@ -20,13 +21,15 @@ public class PlayerMovement : MonoBehaviour
 
   private PlayerCollisionDetection _playerCollisionDetection;
   private PlayerInputEvents _playerInputEvents;
+
   private Rigidbody2D _rigidbody;
 
   private void Awake()
   {
     _playerCollisionDetection = GetComponent<PlayerCollisionDetection>();
-    _rigidbody = GetComponent<Rigidbody2D>();
     _playerInputEvents = GetComponent<PlayerInputEvents>();
+
+    _rigidbody = GetComponent<Rigidbody2D>();
   }
   private void OnEnable()
   {
@@ -36,9 +39,9 @@ public class PlayerMovement : MonoBehaviour
   
   private void Update()
   {
-    _gracePeriodTimer -= Time.deltaTime;
-    _wasGroundedTimer -= Time.deltaTime;
-    _attackPauseTimer -= Time.deltaTime;
+    CountDownTimer(ref _gracePeriodTimer);
+    CountDownTimer(ref _wasGroundedTimer);
+    CountDownTimer(ref _attackPauseTimer);
 
     if (_playerCollisionDetection.IsGrounded)
       _wasGroundedTimer = JUMP_GRACE_PERIOD;
@@ -46,6 +49,13 @@ public class PlayerMovement : MonoBehaviour
     Jump();
     Move();
     StopOnAttack();
+  }
+
+  private void CountDownTimer(ref float timer)
+  {
+    if (timer <= 0f)
+      return;
+    timer -= Time.deltaTime;
   }
 
   private void OnDisable()
@@ -70,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
   public void OnJumpCanceled()
   {
     if (_rigidbody.velocity.y >= 0f)
-      _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y * SMALL_JUMP_MULTIPLIER);
+      _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y * SMALL_JUMP_VELOCITY_MULTIPLIER);
   }
 
   private void OnMove(float x)

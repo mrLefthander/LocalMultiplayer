@@ -14,10 +14,10 @@ public class PlayerAnimations : MonoBehaviour
 
   private void Awake()
   {
-    _animator = GetComponent<Animator>();
     _playerCollisionDetection = GetComponent<PlayerCollisionDetection>();   
     _playerInputEvents = GetComponent<PlayerInputEvents>();
 
+    _animator = GetComponent<Animator>();
     _rigidbody = GetComponent<Rigidbody2D>();
   }
 
@@ -54,5 +54,10 @@ public class PlayerAnimations : MonoBehaviour
   {
     if (Mathf.Abs(dirrection) > 0)
       transform.localScale = new Vector2(Mathf.Sign(dirrection) * 1f, transform.localScale.y);
+  }
+
+  public void PlayerInvincibleAnimation(bool value)
+  {
+    _animator.SetBool("isInvincible", value);
   }
 }

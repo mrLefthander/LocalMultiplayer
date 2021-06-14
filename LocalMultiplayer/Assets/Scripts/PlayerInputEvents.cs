@@ -25,7 +25,8 @@ public class PlayerInputEvents : MonoBehaviour
 
   public void OnAttackInput(InputAction.CallbackContext context)
   {
-    if(context.performed)
-      AttackEvent.Invoke();
+    if (!context.performed) { return; }
+      
+    AttackEvent.Invoke();
   }
 }

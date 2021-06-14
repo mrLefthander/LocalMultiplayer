@@ -7,10 +7,9 @@ public class DamagePlayer: MonoBehaviour
 
   private void OnTriggerEnter2D(Collider2D other)
   {
-    if (_playerLayerMask == (_playerLayerMask | (1 << other.gameObject.layer)))
-    {
-      other.GetComponent<PlayerHealth>().TakeDamage(_damageToDeal);
-    }
+    if (_playerLayerMask != (_playerLayerMask | (1 << other.gameObject.layer))) { return; }
+
+    other.GetComponent<PlayerHealth>().TakeDamage(_damageToDeal);
   }
 }
 
