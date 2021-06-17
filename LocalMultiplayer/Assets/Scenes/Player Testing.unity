@@ -257,7 +257,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
     m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 7368922559723017569, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
+  m_PlayerPrefab: {fileID: 3339137521423774210, guid: 3d2989ee19aea1a479db5f0a2ac77d7f, type: 3}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0
   m_FixedNumberOfSplitScreens: -1
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players:
-  - name: WASD
+  - name: wasd
     routes:
     - original: 37
       remapped: 37
@@ -304,20 +304,24 @@ MonoBehaviour:
       remapped: 15
     - original: 18
       remapped: 18
+    - original: 19
+      remapped: 19
     - original: 1
       remapped: 1
-  - name: Arrows
+  - name: numpad
     routes:
     - original: 37
-      remapped: 63
+      remapped: 92
     - original: 33
-      remapped: 64
+      remapped: 89
     - original: 15
-      remapped: 61
+      remapped: 88
     - original: 18
-      remapped: 62
+      remapped: 90
+    - original: 19
+      remapped: 93
     - original: 1
-      remapped: 84
+      remapped: 77
 --- !u!1 &1416256690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,8 +1346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db627f43b17937e4eaa766ee7ddd04ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInputManager: {fileID: 739362695}
-  _playerSpawnEffect: {fileID: 3647056117896187378, guid: 38dec72b36557fd43b6bde580e4b15bc, type: 3}
 --- !u!4 &1681925535
 Transform:
   m_ObjectHideFlags: 0
