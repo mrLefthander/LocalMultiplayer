@@ -6,6 +6,7 @@ using System.Linq;
 public class CharacterSelectButton : MonoBehaviour
 {
   private const float BUTTON_POPUP_TIME = 0.5f;
+  private const float MINIMAL_VELOCITY_FOR_IN_JUMP_CHECK = -0.1f;
 
   [SerializeField] private Sprite _buttonUp, _buttonDown;
   [SerializeField] private LayerMask _playerLayerMask;
@@ -57,7 +58,7 @@ public class CharacterSelectButton : MonoBehaviour
 
     float playerVelocityY = other.GetComponent<PlayerMovement>().GetVelocityY();
 
-    if (playerVelocityY >= -0.1f) { return; }
+    if (playerVelocityY >= MINIMAL_VELOCITY_FOR_IN_JUMP_CHECK) { return; }
 
     _isPressed = true;
     _buttonPopUpTimer = BUTTON_POPUP_TIME;
