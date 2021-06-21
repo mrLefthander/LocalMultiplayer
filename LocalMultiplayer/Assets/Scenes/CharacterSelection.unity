@@ -10646,6 +10646,7 @@ MonoBehaviour:
   _playerLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  _animatorOverrideController: {fileID: 22100000, guid: c0a37c493d96cc34dab79a75e4cd989a, type: 2}
 --- !u!1 &1681925533
 GameObject:
   m_ObjectHideFlags: 0

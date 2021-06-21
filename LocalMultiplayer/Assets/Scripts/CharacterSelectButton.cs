@@ -10,6 +10,7 @@ public class CharacterSelectButton : MonoBehaviour
 
   [SerializeField] private Sprite _buttonUp, _buttonDown;
   [SerializeField] private LayerMask _playerLayerMask;
+  [SerializeField] private AnimatorOverrideController _animatorOverrideController;
 
   private bool _isPressed;
   private float _buttonPopUpTimer;
@@ -46,7 +47,6 @@ public class CharacterSelectButton : MonoBehaviour
   private void CountDownTimer(ref float timer)
   {
     if (!_isPressed) { return; }
-
     timer -= Time.deltaTime;
   }
 
@@ -62,6 +62,7 @@ public class CharacterSelectButton : MonoBehaviour
 
     _isPressed = true;
     _buttonPopUpTimer = BUTTON_POPUP_TIME;
+    other.GetComponent<PlayerAnimations>().ChangeToPlayerAnimatorOverrideController(_animatorOverrideController);
   }
 
   private void OnTriggerExit2D(Collider2D other)

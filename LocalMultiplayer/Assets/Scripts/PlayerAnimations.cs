@@ -60,4 +60,9 @@ public class PlayerAnimations : MonoBehaviour
   {
     _animator.SetBool("isInvincible", value);
   }
+
+  public void ChangeToPlayerAnimatorOverrideController(AnimatorOverrideController animatorOverride)
+  {
+    _animator.runtimeAnimatorController = animatorOverride;
+  }
 }
