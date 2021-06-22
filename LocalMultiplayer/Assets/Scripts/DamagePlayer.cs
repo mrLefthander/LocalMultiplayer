@@ -7,7 +7,7 @@ public class DamagePlayer: MonoBehaviour
 
   private void OnTriggerEnter2D(Collider2D other)
   {
-    if (!IsTouchingPlayer(other)) { return; }
+    if (!IsTouchingPlayer(other) || !GameManager.instance.canFight) { return; }
 
     other.GetComponent<PlayerHealth>().TakeDamage(_damageToDeal);
   }

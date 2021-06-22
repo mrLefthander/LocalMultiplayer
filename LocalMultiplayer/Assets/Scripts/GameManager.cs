@@ -1,10 +1,11 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
   public static GameManager instance;
+
+  public bool canFight = true;
+
 
   private void Awake()
   {
