@@ -53,8 +53,8 @@ public class SceneLoader: MonoBehaviour
     SceneManager.LoadScene(sceneName);
   }
 
-  public void OnGameStart()
+  public void OnGameStart(int delayTime)
   {
-    LoadLevelWithDelay(GAMEPLAY_SCENE_NAME, GameManager.instance.startGameContDownTime);
+    LoadLevelWithDelay(GAMEPLAY_SCENE_NAME, delayTime);
   }
 }

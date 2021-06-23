@@ -6,8 +6,9 @@ public class GameStartChecker : MonoBehaviour
 {
   [SerializeField] private LayerMask _playerLayerMask;
   [SerializeField] private PlayerInputManager _playerInputManager;
+  [SerializeField] private int _timeToStart = 3;
 
-  public event UnityAction GameStartEvent = delegate { };
+  public event UnityAction<int> GameStartEvent = delegate { };
 
   private int _playersInStartZoneNumber;
 
@@ -16,7 +17,7 @@ public class GameStartChecker : MonoBehaviour
     if (_playersInStartZoneNumber >= 2 && _playersInStartZoneNumber == _playerInputManager.playerCount)
     {
       _playersInStartZoneNumber = 0;
-      GameStartEvent?.Invoke();
+      GameStartEvent?.Invoke(_timeToStart);
     }
   }
 

@@ -27,10 +27,10 @@ public class CharacterSelectUI : MonoBehaviour
     _gameStartChecker.GameStartEvent -= OnGameStart;
   }
 
-  public void OnGameStart()
+  public void OnGameStart(int delayTime)
   {
     _countDownText.gameObject.SetActive(true);
-    StartCoroutine(CountDownStartCounter(GameManager.instance.startGameContDownTime));
+    StartCoroutine(CountDownStartCounter(delayTime));
   }
 
   IEnumerator CountDownStartCounter(int timeToCount)
