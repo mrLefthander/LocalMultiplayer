@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     _playerInputEvents = GetComponent<PlayerInputEvents>();
 
     _rigidbody = GetComponent<Rigidbody2D>();
+    DontDestroyOnLoad(gameObject);
   }
   private void OnEnable()
   {
