@@ -14,8 +14,8 @@ TagManager:
   - Ground
   - Player
   - PlayerVisuals
-  - 
-  - 
+  - Interactable
+  - Background
   - 
   - 
   - 
@@ -38,11 +38,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2386379099
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Ground
     uniqueID: 26198021
+    locked: 0
+  - name: Interactable
+    uniqueID: 1542275841
     locked: 0
   - name: Player
     uniqueID: 109540999

@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     _playerInputEvents = GetComponent<PlayerInputEvents>();
 
     _rigidbody = GetComponent<Rigidbody2D>();
+    DontDestroyOnLoad(gameObject);
   }
   private void OnEnable()
   {
@@ -51,6 +52,11 @@ public class PlayerMovement : MonoBehaviour
     StopOnAttack();
   }
 
+  private void OnDisable()
+  {
+    UnsubscribeFromEvents();
+  }
+
   private void CountDownTimer(ref float timer)
   {
     if (timer <= 0f)
@@ -58,9 +64,9 @@ public class PlayerMovement : MonoBehaviour
     timer -= Time.deltaTime;
   }
 
-  private void OnDisable()
+  public float GetVelocityY()
   {
-    UnsubscribeFromEvents();
+    return _rigidbody.velocity.y;
   }
 
   public void OnJump()
@@ -79,8 +85,9 @@ public class PlayerMovement : MonoBehaviour
 
   public void OnJumpCanceled()
   {
-    if (_rigidbody.velocity.y >= 0f)
-      _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y * SMALL_JUMP_VELOCITY_MULTIPLIER);
+    if (_rigidbody.velocity.y < 0f) { return; }
+
+    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y * SMALL_JUMP_VELOCITY_MULTIPLIER);
   }
 
   private void OnMove(float x)
