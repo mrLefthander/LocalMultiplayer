@@ -11,9 +11,12 @@ public class CharacterSelectUI : MonoBehaviour
   [SerializeField] private GameStartChecker _gameStartChecker;
 
   private bool _isMaxPlayers;
+  private IEnumerator gameStartCoroutine;
+
   private void OnEnable()
   {
     _gameStartChecker.GameStartEvent += OnGameStart;
+    _gameStartChecker.GameStartCanceledEvent += OnGameStartCanceled;
   }
 
   private void Update()
@@ -30,7 +33,13 @@ public class CharacterSelectUI : MonoBehaviour
   public void OnGameStart(int delayTime)
   {
     _countDownText.gameObject.SetActive(true);
-    StartCoroutine(CountDownStartCounter(delayTime));
+    gameStartCoroutine = CountDownStartCounter(delayTime);
+    StartCoroutine(gameStartCoroutine);
+  }
+  public void OnGameStartCanceled()
+  {
+    StopCoroutine(gameStartCoroutine);
+    _countDownText.gameObject.SetActive(false);
   }
 
   IEnumerator CountDownStartCounter(int timeToCount)

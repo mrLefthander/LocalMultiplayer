@@ -4,37 +4,58 @@ using UnityEngine.Events;
 
 public class GameStartChecker : MonoBehaviour
 {
+  private const int MINIMUM_PLAYERS_COUNT_TO_START_GAME = 2;
   [SerializeField] private LayerMask _playerLayerMask;
   [SerializeField] private PlayerInputManager _playerInputManager;
   [SerializeField] private int _timeToStart = 3;
 
   public event UnityAction<int> GameStartEvent = delegate { };
+  public event UnityAction GameStartCanceledEvent = delegate { };
 
   private int _playersInStartZoneNumber;
+  private int _playersWasInStartZoneNumber;
 
   private void Update()
   {
-    if (_playersInStartZoneNumber >= 2 && _playersInStartZoneNumber == _playerInputManager.playerCount)
-    {
-      _playersInStartZoneNumber = 0;
-      GameStartEvent?.Invoke(_timeToStart);
-    }
+    if (_playersInStartZoneNumber < MINIMUM_PLAYERS_COUNT_TO_START_GAME || !IsAllPlayersInStartZone()) { return; }
+
+    _playersWasInStartZoneNumber = _playersInStartZoneNumber;
+    _playersInStartZoneNumber = 0;
+    GameStartEvent?.Invoke(_timeToStart);
   }
 
   private void OnTriggerEnter2D(Collider2D other)
   {
-    if (IsTriggeredByPlayer(other))
-      _playersInStartZoneNumber++;
+    if (!IsTriggeredByPlayer(other)) { return; }
+    _playersInStartZoneNumber++;
   }
 
   private void OnTriggerExit2D(Collider2D other)
   {
-    if (IsTriggeredByPlayer(other))
-      _playersInStartZoneNumber--;
+    if (!IsTriggeredByPlayer(other)) { return; }
+
+    if (IsAllPlayersWasInStartZone())
+    {
+      _playersInStartZoneNumber = _playersWasInStartZoneNumber;
+      _playersWasInStartZoneNumber = 0;
+      GameStartCanceledEvent?.Invoke();
+    }
+
+    _playersInStartZoneNumber--;
   }
 
   private bool IsTriggeredByPlayer(Collider2D other)
   {
     return _playerLayerMask == (_playerLayerMask | (1 << other.gameObject.layer));
+  }
+
+  private bool IsAllPlayersInStartZone()
+  {
+    return _playersInStartZoneNumber == _playerInputManager.playerCount;
+  }
+
+  private bool IsAllPlayersWasInStartZone()
+  {
+    return _playersWasInStartZoneNumber == _playerInputManager.playerCount;
   }
 }
