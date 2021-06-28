@@ -128,6 +128,7 @@ public class KeyboardSplitter : MonoBehaviour
     public List<Player> players = new List<Player>();
     InputUser consumer;
     Keyboard keyboard;
+    public static KeyboardSplitter instance;
 
     Dictionary<Key, System.Tuple<Player, Key>> routingTable = new Dictionary<Key, System.Tuple<Player, Key>>();
 
@@ -147,6 +148,7 @@ public class KeyboardSplitter : MonoBehaviour
         consumer.AssociateActionsWithUser(arr);
 
         UpdateRoutes();
+        SetUpSingleton();
     }
 
     private void OnEnable()
@@ -224,5 +226,20 @@ public class KeyboardSplitter : MonoBehaviour
                 playerTable[route.remapped] = p;
             }
         }
+    }
+
+    private void SetUpSingleton()
+    {
+      if (instance == null)
+      {
+        instance = this;
+      }
+      else
+      {
+        gameObject.SetActive(false);
+        Destroy(gameObject);
+        return;
+      }
+      DontDestroyOnLoad(gameObject);
     }
 }

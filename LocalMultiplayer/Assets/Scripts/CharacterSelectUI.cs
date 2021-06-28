@@ -7,7 +7,6 @@ public class CharacterSelectUI : MonoBehaviour
 {
   [SerializeField] private GameObject _joinTextGO;
   [SerializeField] private TMP_Text _countDownText;
-  [SerializeField] private PlayerInputManager _playerInputManager;
   [SerializeField] private GameStartChecker _gameStartChecker;
 
   private bool _isMaxPlayers;
@@ -21,7 +20,7 @@ public class CharacterSelectUI : MonoBehaviour
 
   private void Update()
   {
-    _isMaxPlayers = _playerInputManager != null && _playerInputManager.maxPlayerCount <= _playerInputManager.playerCount;
+    _isMaxPlayers = PlayerInputManager.instance.maxPlayerCount <= PlayerInputManager.instance.playerCount;
     _joinTextGO.SetActive(!_isMaxPlayers);
   }
 

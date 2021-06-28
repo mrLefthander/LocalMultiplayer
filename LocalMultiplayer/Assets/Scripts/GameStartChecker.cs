@@ -6,7 +6,6 @@ public class GameStartChecker : MonoBehaviour
 {
   private const int MINIMUM_PLAYERS_COUNT_TO_START_GAME = 2;
   [SerializeField] private LayerMask _playerLayerMask;
-  [SerializeField] private PlayerInputManager _playerInputManager;
   [SerializeField] private int _timeToStart = 3;
 
   public event UnityAction<int> GameStartEvent = delegate { };
@@ -51,11 +50,11 @@ public class GameStartChecker : MonoBehaviour
 
   private bool IsAllPlayersInStartZone()
   {
-    return _playersInStartZoneNumber == _playerInputManager.playerCount;
+    return _playersInStartZoneNumber == PlayerInputManager.instance.playerCount;
   }
 
   private bool IsAllPlayersWasInStartZone()
   {
-    return _playersWasInStartZoneNumber == _playerInputManager.playerCount;
+    return _playersWasInStartZoneNumber == PlayerInputManager.instance.playerCount;
   }
 }
