@@ -14,8 +14,8 @@ public class CharacterSelectUI : MonoBehaviour
 
   private void OnEnable()
   {
-    _gameStartChecker.GameStartEvent += OnGameStart;
-    _gameStartChecker.GameStartCanceledEvent += OnGameStartCanceled;
+    _gameStartChecker.ArenaLoadEvent += OnGameStart;
+    _gameStartChecker.ArenaLoadCanceledEvent += OnGameStartCanceled;
   }
 
   private void Update()
@@ -26,7 +26,7 @@ public class CharacterSelectUI : MonoBehaviour
 
   private void OnDisable()
   {
-    _gameStartChecker.GameStartEvent -= OnGameStart;
+    _gameStartChecker.ArenaLoadEvent -= OnGameStart;
   }
 
   public void OnGameStart(int delayTime)

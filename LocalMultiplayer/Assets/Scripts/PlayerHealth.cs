@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PlayerAnimations))]
 public class PlayerHealth : MonoBehaviour
@@ -24,7 +23,6 @@ public class PlayerHealth : MonoBehaviour
   {
     ResetHealth();
     _playerAnimations = GetComponent<PlayerAnimations>();
-    SceneManager.sceneLoaded += OnSceneChange;
   }
 
   private void Update()
@@ -35,11 +33,6 @@ public class PlayerHealth : MonoBehaviour
   private void LateUpdate()
   {
     _heartsHolder.localScale = transform.localScale;
-  }
-
-  private void OnDisable()
-  {
-    SceneManager.sceneLoaded -= OnSceneChange;
   }
 
   private void InvincibilityStateTimer()
@@ -71,18 +64,14 @@ public class PlayerHealth : MonoBehaviour
 
     if (_currentHealth >= 0) { return; }
 
-    DeathEvent?.Invoke(this);
     gameObject.SetActive(false);
+    DeathEvent?.Invoke(this);
   }
 
   public void ResetHealth()
   {
+    gameObject.SetActive(true);
     _currentHealth = _maxHealth;
-  }
-
-  private void OnSceneChange(Scene scene, LoadSceneMode mode)
-  {
-    ResetHealth();
     UpdateDisplay();
   }
 }

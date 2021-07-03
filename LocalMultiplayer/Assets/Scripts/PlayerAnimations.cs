@@ -29,8 +29,8 @@ public class PlayerAnimations : MonoBehaviour
 
   private void Update()
   {
-    _animator.SetBool("isGrounded", _playerCollisionDetection.IsGrounded);
-    _animator.SetFloat("ySpeed", _rigidbody.velocity.y);
+    _animator.SetBool(ApplicationVariables.AnimationNames.IsGrounded, _playerCollisionDetection.IsGrounded);
+    _animator.SetFloat(ApplicationVariables.AnimationNames.YSpeed, _rigidbody.velocity.y);
   }
 
   private void OnDisable()
@@ -41,12 +41,12 @@ public class PlayerAnimations : MonoBehaviour
 
   private void OnAttackAnimation()
   {
-    _animator.SetTrigger("attack");
+    _animator.SetTrigger(ApplicationVariables.AnimationNames.Attack);
   }
 
   private void OnMoveAnimation(float dirrection)
   {
-    _animator.SetFloat("xSpeed", Mathf.Abs(dirrection));
+    _animator.SetFloat(ApplicationVariables.AnimationNames.XSpeed, Mathf.Abs(dirrection));
     FlipSprite(dirrection);
   }
 
@@ -58,7 +58,7 @@ public class PlayerAnimations : MonoBehaviour
 
   public void PlayerInvincibleAnimation(bool value)
   {
-    _animator.SetBool("isInvincible", value);
+    _animator.SetBool(ApplicationVariables.AnimationNames.IsInvincible, value);
   }
 
   public void ChangeToPlayerAnimatorOverrideController(AnimatorOverrideController animatorOverride)

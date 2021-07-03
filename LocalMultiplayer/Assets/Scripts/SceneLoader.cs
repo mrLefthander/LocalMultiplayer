@@ -1,37 +1,34 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader: MonoBehaviour
 {
-  private const string CHARACTER_SELECTION_SCENE_NAME = "CharacterSelection";
-  private const string GAMEPLAY_SCENE_NAME = "ArenaTest1";
-
-  private GameStartChecker _gameStartChecker;
+  private IArenaLoadTrigger _arenaLoadTrigger;
   private IEnumerator gameStartCoroutine;
   private bool isStoped;
 
   private void Awake()
   {
-    if(SceneManager.GetActiveScene().name == CHARACTER_SELECTION_SCENE_NAME)
-      _gameStartChecker = FindObjectOfType<GameStartChecker>();
+   _arenaLoadTrigger = FindObjectsOfType<MonoBehaviour>().OfType<IArenaLoadTrigger>().SingleOrDefault();
   }
 
   private void OnEnable()
   {
-    if (_gameStartChecker != null)
+    if (_arenaLoadTrigger != null)
     {
-      _gameStartChecker.GameStartEvent += OnGameStart;
-      _gameStartChecker.GameStartCanceledEvent += OnGameStartCanceled;
+      _arenaLoadTrigger.ArenaLoadEvent += OnArenaLoad;
+      _arenaLoadTrigger.ArenaLoadCanceledEvent += OnArenaLoadCanceled;
     }
   }
 
   private void OnDisable()
   {
-    if (_gameStartChecker != null)
+    if (_arenaLoadTrigger != null)
     {
-      _gameStartChecker.GameStartEvent -= OnGameStart;
-      _gameStartChecker.GameStartCanceledEvent -= OnGameStartCanceled;
+      _arenaLoadTrigger.ArenaLoadEvent -= OnArenaLoad;
+      _arenaLoadTrigger.ArenaLoadCanceledEvent -= OnArenaLoadCanceled;
     }
   }
 
@@ -63,12 +60,12 @@ public class SceneLoader: MonoBehaviour
     SceneManager.LoadScene(sceneName);
   }
   
-  public void OnGameStart(int delayTime)
+  public void OnArenaLoad(int delayTime)
   {
-    LoadLevelWithDelay(GAMEPLAY_SCENE_NAME, delayTime);
+    LoadLevelWithDelay(ApplicationVariables.SceneNames.GetNextArenaName(), delayTime);
   }
 
-  public void OnGameStartCanceled()
+  public void OnArenaLoadCanceled()
   {
     isStoped = true;
     StopCoroutine(gameStartCoroutine);

@@ -2,14 +2,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
-public class GameStartChecker : MonoBehaviour
+public class GameStartChecker : MonoBehaviour, IArenaLoadTrigger
 {
   private const int MINIMUM_PLAYERS_COUNT_TO_START_GAME = 2;
+
   [SerializeField] private LayerMask _playerLayerMask;
   [SerializeField] private int _timeToStart = 3;
 
-  public event UnityAction<int> GameStartEvent = delegate { };
-  public event UnityAction GameStartCanceledEvent = delegate { };
+  public event UnityAction<int> ArenaLoadEvent = delegate { };
+  public event UnityAction ArenaLoadCanceledEvent = delegate { };
 
   private int _playersInStartZoneNumber;
   private int _playersWasInStartZoneNumber;
@@ -20,7 +21,7 @@ public class GameStartChecker : MonoBehaviour
 
     _playersWasInStartZoneNumber = _playersInStartZoneNumber;
     _playersInStartZoneNumber = 0;
-    GameStartEvent?.Invoke(_timeToStart);
+    ArenaLoadEvent?.Invoke(_timeToStart);
   }
 
   private void OnTriggerEnter2D(Collider2D other)
@@ -37,7 +38,7 @@ public class GameStartChecker : MonoBehaviour
     {
       _playersInStartZoneNumber = _playersWasInStartZoneNumber;
       _playersWasInStartZoneNumber = 0;
-      GameStartCanceledEvent?.Invoke();
+      ArenaLoadCanceledEvent?.Invoke();
     }
 
     _playersInStartZoneNumber--;
