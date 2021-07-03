@@ -7,30 +7,38 @@ public class CharacterSelectUI : MonoBehaviour
 {
   [SerializeField] private GameObject _joinTextGO;
   [SerializeField] private TMP_Text _countDownText;
-  [SerializeField] private PlayerInputManager _playerInputManager;
   [SerializeField] private GameStartChecker _gameStartChecker;
 
   private bool _isMaxPlayers;
+  private IEnumerator gameStartCoroutine;
+
   private void OnEnable()
   {
-    _gameStartChecker.GameStartEvent += OnGameStart;
+    _gameStartChecker.ArenaLoadEvent += OnGameStart;
+    _gameStartChecker.ArenaLoadCanceledEvent += OnGameStartCanceled;
   }
 
   private void Update()
   {
-    _isMaxPlayers = _playerInputManager != null && _playerInputManager.maxPlayerCount <= _playerInputManager.playerCount;
+    _isMaxPlayers = PlayerInputManager.instance.maxPlayerCount <= PlayerInputManager.instance.playerCount;
     _joinTextGO.SetActive(!_isMaxPlayers);
   }
 
   private void OnDisable()
   {
-    _gameStartChecker.GameStartEvent -= OnGameStart;
+    _gameStartChecker.ArenaLoadEvent -= OnGameStart;
   }
 
   public void OnGameStart(int delayTime)
   {
     _countDownText.gameObject.SetActive(true);
-    StartCoroutine(CountDownStartCounter(delayTime));
+    gameStartCoroutine = CountDownStartCounter(delayTime);
+    StartCoroutine(gameStartCoroutine);
+  }
+  public void OnGameStartCanceled()
+  {
+    StopCoroutine(gameStartCoroutine);
+    _countDownText.gameObject.SetActive(false);
   }
 
   IEnumerator CountDownStartCounter(int timeToCount)

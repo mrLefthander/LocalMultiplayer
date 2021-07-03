@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(PlayerAnimations))]
 public class PlayerHealth : MonoBehaviour
@@ -11,6 +12,7 @@ public class PlayerHealth : MonoBehaviour
   [SerializeField] private Sprite _heartFull;
   [SerializeField] private Sprite _heartEmpty;
 
+  public event UnityAction<PlayerHealth> DeathEvent = delegate { };
   private readonly int _maxHealth = 3;
   private int _currentHealth;
   private float _invincibilityTimer;
@@ -19,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
 
   private void Start()
   {
-    _currentHealth = _maxHealth;
+    ResetHealth();
     _playerAnimations = GetComponent<PlayerAnimations>();
   }
 
@@ -63,6 +65,13 @@ public class PlayerHealth : MonoBehaviour
     if (_currentHealth >= 0) { return; }
 
     gameObject.SetActive(false);
-    Destroy(gameObject);
+    DeathEvent?.Invoke(this);
+  }
+
+  public void ResetHealth()
+  {
+    gameObject.SetActive(true);
+    _currentHealth = _maxHealth;
+    UpdateDisplay();
   }
 }

@@ -1,32 +1,35 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader: MonoBehaviour
 {
-  private const string CHARACTER_SELECTION_SCENE_NAME = "CharacterSelection";
-  private const string GAMEPLAY_SCENE_NAME = "Player Testing";
-
-  private GameStartChecker _gameStartChecker;
-  
-  private void OnEnable()
-  {
-    _gameStartChecker.GameStartEvent += OnGameStart;
-  }
+  private IArenaLoadTrigger _arenaLoadTrigger;
+  private IEnumerator gameStartCoroutine;
+  private bool isStoped;
 
   private void Awake()
   {
-    if(SceneManager.GetActiveScene().name == CHARACTER_SELECTION_SCENE_NAME)
-      _gameStartChecker = FindObjectOfType<GameStartChecker>();
+   _arenaLoadTrigger = FindObjectsOfType<MonoBehaviour>().OfType<IArenaLoadTrigger>().SingleOrDefault();
+  }
 
-    if (_gameStartChecker != null)
-      _gameStartChecker.GameStartEvent += OnGameStart;
+  private void OnEnable()
+  {
+    if (_arenaLoadTrigger != null)
+    {
+      _arenaLoadTrigger.ArenaLoadEvent += OnArenaLoad;
+      _arenaLoadTrigger.ArenaLoadCanceledEvent += OnArenaLoadCanceled;
+    }
   }
 
   private void OnDisable()
   {
-    if (_gameStartChecker != null)
-      _gameStartChecker.GameStartEvent += OnGameStart;
+    if (_arenaLoadTrigger != null)
+    {
+      _arenaLoadTrigger.ArenaLoadEvent -= OnArenaLoad;
+      _arenaLoadTrigger.ArenaLoadCanceledEvent -= OnArenaLoadCanceled;
+    }
   }
 
   public void QuitGame()
@@ -36,25 +39,35 @@ public class SceneLoader: MonoBehaviour
 
   public void LoadLevelWithDelay(string sceneName, int delayTime)
   {
-    StartCoroutine(DelayedLoad(sceneName, delayTime));
+    isStoped = false;
+    gameStartCoroutine = DelayedLoad(sceneName, delayTime);
+    StartCoroutine(gameStartCoroutine);
   }
 
-  IEnumerator DelayedLoad(string sceneName, int delayTime = 0)
+  IEnumerator DelayedLoad(string sceneName, int delayTime)
   {
     for (int i = delayTime; i >= 0; i--)
     {
       yield return new WaitForSeconds(1f);
     }
-    LoadLevel(sceneName);
+
+    if(!isStoped)
+      LoadLevel(sceneName);
   }
 
   public void LoadLevel(string sceneName)
   {
     SceneManager.LoadScene(sceneName);
   }
-
-  public void OnGameStart(int delayTime)
+  
+  public void OnArenaLoad(int delayTime)
   {
-    LoadLevelWithDelay(GAMEPLAY_SCENE_NAME, delayTime);
+    LoadLevelWithDelay(ApplicationVariables.SceneNames.GetNextArenaName(), delayTime);
+  }
+
+  public void OnArenaLoadCanceled()
+  {
+    isStoped = true;
+    StopCoroutine(gameStartCoroutine);
   }
 }

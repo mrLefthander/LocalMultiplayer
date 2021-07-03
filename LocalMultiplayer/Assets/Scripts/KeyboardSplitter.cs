@@ -35,194 +35,211 @@ using UnityEngine.InputSystem.Controls;
 
 
 [RequireComponent(typeof(PlayerInputManager))]
-public class KeyboardSplitter : MonoBehaviour
+public class KeyboardSplitter: MonoBehaviour
 {
-    [System.Serializable]
-    public class KeyRemap
-    {
-        public Key original;
-        public Key remapped;
+  [System.Serializable]
+  public class KeyRemap
+  {
+    public Key original;
+    public Key remapped;
 
-        public KeyRemap(InputBinding binding)
-        {
-            KeyControl keyControl = Keyboard.current.allKeys.FirstOrDefault(x => x.name == binding.path.Split('/').Last());
-            original = keyControl.keyCode;
-            remapped = original;
-        }
+    public KeyRemap(InputBinding binding)
+    {
+      KeyControl keyControl = Keyboard.current.allKeys.FirstOrDefault(x => x.name == binding.path.Split('/').Last());
+      original = keyControl.keyCode;
+      remapped = original;
+    }
+  }
+
+  [System.Serializable]
+  public class Player
+  {
+    public string name;
+    public List<KeyRemap> routes = new List<KeyRemap>();
+    internal Keyboard device;
+    internal KeyboardState state;
+    bool isDirty = false;
+
+    public void AddDevice() => device = InputSystem.AddDevice<Keyboard>(name);
+    public void RemoveDevice() => InputSystem.RemoveDevice(device);
+    public void Set(Key key, bool pressed)
+    {
+      state.Set(key, pressed);
+      isDirty = true;
     }
 
-    [System.Serializable]
-    public class Player
+    public bool Push(bool ignoreDirty = false)
     {
-        public string name;
-        public List<KeyRemap> routes = new List<KeyRemap>();
-        internal Keyboard device;
-        internal KeyboardState state;
-        bool isDirty = false;
+      if (ignoreDirty || isDirty)
+      {
+        InputSystem.QueueStateEvent(device, state, Time.time + 1f);
+        isDirty = false;
+        return true;
+      }
 
-        public void AddDevice() => device = InputSystem.AddDevice<Keyboard>(name);
-        public void RemoveDevice() => InputSystem.RemoveDevice(device);
-        public void Set(Key key, bool pressed)
-        {
-            state.Set(key, pressed);
-            isDirty = true;
-        }
+      return false;
+    }
+  }
 
-        public bool Push(bool ignoreDirty = false)
-        {
-            if (ignoreDirty || isDirty)
-            {
-                InputSystem.QueueStateEvent(device, state, Time.time + 1f);
-                isDirty = false;
-                return true;
-            }
 
-            return false;
-        }
+  // Helper class to be a sneaky input pirate and steal actions from PlayerInputManager
+  private class ActionCollection: IInputActionCollection
+  {
+    public InputBinding? bindingMask { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public ReadOnlyArray<InputDevice>? devices { get => m_devices; set => m_devices = value; }
+
+    public ReadOnlyArray<InputControlScheme> controlSchemes => throw new System.NotImplementedException();
+
+    List<InputAction> m_actions = new List<InputAction>();
+    ReadOnlyArray<InputDevice>? m_devices;
+
+    public ActionCollection(InputDevice device, InputAction action)
+    {
+      m_devices = new ReadOnlyArray<InputDevice>(new InputDevice[] { device });
+      m_actions.Add(action);
     }
 
-
-    // Helper class to be a sneaky input pirate and steal actions from PlayerInputManager
-    private class ActionCollection : IInputActionCollection
+    public bool Contains(InputAction action)
     {
-        public InputBinding? bindingMask { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public ReadOnlyArray<InputDevice>? devices { get => m_devices; set => m_devices = value; }
-
-        public ReadOnlyArray<InputControlScheme> controlSchemes => throw new System.NotImplementedException();
-
-        List<InputAction> m_actions = new List<InputAction>();
-        ReadOnlyArray<InputDevice>? m_devices;
-
-        public ActionCollection(InputDevice device, InputAction action)
-        {
-            m_devices = new ReadOnlyArray<InputDevice>(new InputDevice[] { device });
-            m_actions.Add(action);
-        }
-
-        public bool Contains(InputAction action)
-        {
-            return m_actions.Contains(action);
-        }
-
-        public void Disable()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Enable()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IEnumerator<InputAction> GetEnumerator()
-        {
-            return m_actions.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return m_actions.GetEnumerator();
-        }
+      return m_actions.Contains(action);
     }
 
-    public List<Player> players = new List<Player>();
-    InputUser consumer;
-    Keyboard keyboard;
-
-    Dictionary<Key, System.Tuple<Player, Key>> routingTable = new Dictionary<Key, System.Tuple<Player, Key>>();
-
-    Dictionary<Key, Key> keyTable = new Dictionary<Key, Key>();
-    Dictionary<Key, Player> playerTable = new Dictionary<Key, Player>();
-
-    private void Awake()
+    public void Disable()
     {
-        keyboard = Keyboard.current;
-        consumer = InputUser.PerformPairingWithDevice(keyboard, consumer);
-
-        foreach (var p in players)
-            p.AddDevice();
-
-        //Hijack the PlayerInputManager Join actions! Yarrr!
-        var arr = new ActionCollection(Keyboard.current, GetComponent<PlayerInputManager>().joinAction.action);
-        consumer.AssociateActionsWithUser(arr);
-
-        UpdateRoutes();
+      throw new System.NotImplementedException();
     }
 
-    private void OnEnable()
+    public void Enable()
     {
-        InputSystem.onEvent += OnEvent;
-        InputSystem.onBeforeUpdate += PushPlayerStates;
+      throw new System.NotImplementedException();
     }
 
-
-    private void OnDisable()
+    public IEnumerator<InputAction> GetEnumerator()
     {
-        InputSystem.onEvent -= OnEvent;
-        InputSystem.onBeforeUpdate -= PushPlayerStates;
+      return m_actions.GetEnumerator();
     }
 
-    private void OnDestroy()
+    IEnumerator IEnumerable.GetEnumerator()
     {
-        consumer.UnpairDevicesAndRemoveUser();
-        foreach (var p in players)
-            p.RemoveDevice();
+      return m_actions.GetEnumerator();
     }
+  }
 
-    private void PushPlayerStates()
-    {
-        foreach (var p in players)
-            p.Push();
-    }
+  public List<Player> players = new List<Player>();
+  InputUser consumer;
+  Keyboard keyboard;
+  public static KeyboardSplitter instance;
 
-    private unsafe void OnEvent(InputEventPtr eventPtr, InputDevice device)
+  Dictionary<Key, System.Tuple<Player, Key>> routingTable = new Dictionary<Key, System.Tuple<Player, Key>>();
+
+  Dictionary<Key, Key> keyTable = new Dictionary<Key, Key>();
+  Dictionary<Key, Player> playerTable = new Dictionary<Key, Player>();
+
+  private void Awake()
+  {
+    keyboard = Keyboard.current;
+    consumer = InputUser.PerformPairingWithDevice(keyboard, consumer);
+
+    foreach (var p in players)
+      p.AddDevice();
+
+    //Hijack the PlayerInputManager Join actions! Yarrr!
+    var arr = new ActionCollection(Keyboard.current, GetComponent<PlayerInputManager>().joinAction.action);
+    consumer.AssociateActionsWithUser(arr);
+
+    UpdateRoutes();
+    SetUpSingleton();
+  }
+
+  private void OnEnable()
+  {
+    InputSystem.onEvent += OnEvent;
+    InputSystem.onBeforeUpdate += PushPlayerStates;
+  }
+
+
+  private void OnDisable()
+  {
+    InputSystem.onEvent -= OnEvent;
+    InputSystem.onBeforeUpdate -= PushPlayerStates;
+  }
+
+  private void OnDestroy()
+  {
+    consumer.UnpairDevicesAndRemoveUser();
+    foreach (var p in players)
+      p.RemoveDevice();
+  }
+
+  private void PushPlayerStates()
+  {
+    foreach (var p in players)
+      p.Push();
+  }
+
+  private unsafe void OnEvent(InputEventPtr eventPtr, InputDevice device)
+  {
+    if (device == keyboard)
     {
-        if (device == keyboard)
+      if (!eventPtr.IsA<StateEvent>())
+        return;
+
+      int controlCount = device.allControls.Count;
+      var controls = device.allControls;
+
+      for (int i = 0; i < controlCount; i++)
+      {
+        var control = controls[i];
+
+        var statePtr = control.GetStatePtrFromStateEvent(eventPtr);
+        if (statePtr == null)
+          continue;
+
+        if (control is KeyControl)
         {
-            if (!eventPtr.IsA<StateEvent>())
-                return;
+          KeyControl keyControl = (KeyControl)control;
+          Key a = keyControl.keyCode;
+          if (keyTable.ContainsKey(a))
+          {
+            Key b = keyTable[a];
+            playerTable[a].Set(b, keyControl.ReadValueFromState(statePtr) > 0);
+          }
 
-            int controlCount = device.allControls.Count;
-            var controls = device.allControls;
-
-            for (int i = 0; i < controlCount; i++)
-            {
-                var control = controls[i];
-
-                var statePtr = control.GetStatePtrFromStateEvent(eventPtr);
-                if (statePtr == null)
-                    continue;
-
-                if (control is KeyControl)
-                {
-                    KeyControl keyControl = (KeyControl)control;
-                    Key a = keyControl.keyCode;
-                    if (keyTable.ContainsKey(a))
-                    {
-                        Key b = keyTable[a];
-                        playerTable[a].Set(b, keyControl.ReadValueFromState(statePtr) > 0);
-                    }
-
-                }
-            }
-
-            eventPtr.handled = true;
         }
+      }
 
+      eventPtr.handled = true;
     }
 
-    public void UpdateRoutes()
+  }
+
+  public void UpdateRoutes()
+  {
+    keyTable.Clear();
+    playerTable.Clear();
+
+    foreach (var p in players)
     {
-        keyTable.Clear();
-        playerTable.Clear();
-
-        foreach (var p in players)
-        {
-            foreach (var route in p.routes)
-            {
-                keyTable[route.remapped] = route.original;
-                playerTable[route.remapped] = p;
-            }
-        }
+      foreach (var route in p.routes)
+      {
+        keyTable[route.remapped] = route.original;
+        playerTable[route.remapped] = p;
+      }
     }
+  }
+
+  private void SetUpSingleton()
+  {
+    if (instance == null)
+    {
+      instance = this;
+    }
+    else
+    {
+      gameObject.SetActive(false);
+      Destroy(gameObject);
+      return;
+    }
+    DontDestroyOnLoad(gameObject);
+  }
 }
