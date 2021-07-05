@@ -39,7 +39,8 @@ public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
 
     if(_playersList.Count == 1)
     {
-      _defeatedPlayersList= FindObjectsOfType<PlayerHealth>(true).ToList();
+      ApplicationVariables.LastRoundWinnerName = _playersList[0].PlayerNumber;
+      _defeatedPlayersList = FindObjectsOfType<PlayerHealth>(true).ToList();
       foreach (PlayerHealth defeatedPlayer in _defeatedPlayersList)
       {
         GameManager.instance.CanFight = false;

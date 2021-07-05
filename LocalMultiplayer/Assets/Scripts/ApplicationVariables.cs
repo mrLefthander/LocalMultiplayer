@@ -5,6 +5,9 @@ using UnityEngine;
 
 public static class ApplicationVariables
 {
+  public static bool CanFight = true;
+  public static int LastRoundWinnerName = 0;
+
   public static class SceneNames
   {
     public static readonly string CharacterSelection = "CharacterSelection";
@@ -27,7 +30,7 @@ public static class ApplicationVariables
 
   public static class AnimationNames
   {
-    public static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
+    public static readonly int IsGrounded = Animator.StringToHash("isGrounded");
     public static readonly int IsInvincible = Animator.StringToHash("isInvincible");
     public static readonly int YSpeed = Animator.StringToHash("ySpeed");
     public static readonly int XSpeed = Animator.StringToHash("xSpeed");

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerAnimations))]
 public class PlayerHealth : MonoBehaviour
@@ -12,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
   [SerializeField] private Sprite _heartFull;
   [SerializeField] private Sprite _heartEmpty;
 
+  public int PlayerNumber { get; private set; }
   public event UnityAction<PlayerHealth> DeathEvent = delegate { };
   private readonly int _maxHealth = 3;
   private int _currentHealth;
@@ -21,6 +23,7 @@ public class PlayerHealth : MonoBehaviour
 
   private void Start()
   {
+    PlayerNumber = PlayerInputManager.instance.playerCount;
     ResetHealth();
     _playerAnimations = GetComponent<PlayerAnimations>();
   }
