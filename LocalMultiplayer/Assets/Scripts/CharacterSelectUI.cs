@@ -9,7 +9,6 @@ public class CharacterSelectUI : MonoBehaviour
   [SerializeField] private TMP_Text _countDownText;
   [SerializeField] private GameStartChecker _gameStartChecker;
 
-  private bool _isMaxPlayers;
   private IEnumerator gameStartCoroutine;
 
   private void OnEnable()
@@ -20,8 +19,7 @@ public class CharacterSelectUI : MonoBehaviour
 
   private void Update()
   {
-    _isMaxPlayers = PlayerInputManager.instance.maxPlayerCount <= PlayerInputManager.instance.playerCount;
-    _joinTextGO.SetActive(!_isMaxPlayers);
+    _joinTextGO.SetActive(!_gameStartChecker.IsMaxPlayers());
   }
 
   private void OnDisable()

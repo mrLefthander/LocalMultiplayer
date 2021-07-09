@@ -30,6 +30,6 @@ public class RoundWinUI : MonoBehaviour
   private void OnRoundOwer(int timeToLoad)
   {
     gameObject.SetActive(true);
-    _winnerText.text = "Player " + ApplicationVariables.LastRoundWinnerName + " won";
+    _winnerText.text = "Player " + GameManager.instance.RoundWinnerPlayerNumber + " won";
   }
 }

@@ -18,18 +18,20 @@ public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
 
   private void Awake()
   {
-    GameManager.instance.CanFight = _canFight;
-
-    PlayerInputManager.instance.DisableJoining();
-
     _playersList = FindObjectsOfType<PlayerHealth>().ToList();
 
-    foreach(PlayerHealth player in _playersList)
+    SubscribeOnPlayersDeath();
+
+    GameManager.instance.StartRound();
+    SpawnPlayersOnRandomPoints();
+  }
+
+  private void SubscribeOnPlayersDeath()
+  {
+    foreach (PlayerHealth player in _playersList)
     {
       player.DeathEvent += OnPlayerDeath;
     }
-
-    SpawnPlayersOnRandomPoints();
   }
 
   private void OnPlayerDeath(PlayerHealth player)
@@ -37,16 +39,26 @@ public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
     player.DeathEvent -= OnPlayerDeath;
     _playersList.Remove(player);
 
-    if(_playersList.Count == 1)
+    if (_playersList.Count != 1) { return; }
+
+    EndArena();
+  }
+
+  private void EndArena()
+  {
+    GameManager.instance.EndRound(_playersList[0].PlayerNumber);
+    RespawnAllPlayers();
+
+    if (GameManager.instance.GameWin) { return; }
+    ArenaLoadEvent?.Invoke(_timeToStart);
+  }
+
+  private void RespawnAllPlayers()
+  {
+    _defeatedPlayersList = FindObjectsOfType<PlayerHealth>(true).ToList();
+    foreach (PlayerHealth defeatedPlayer in _defeatedPlayersList)
     {
-      ApplicationVariables.LastRoundWinnerName = _playersList[0].PlayerNumber;
-      _defeatedPlayersList = FindObjectsOfType<PlayerHealth>(true).ToList();
-      foreach (PlayerHealth defeatedPlayer in _defeatedPlayersList)
-      {
-        GameManager.instance.CanFight = false;
-        defeatedPlayer.ResetHealth();
-      }
-      ArenaLoadEvent?.Invoke(_timeToStart);
+      defeatedPlayer.ResetHealth();
     }
   }
 

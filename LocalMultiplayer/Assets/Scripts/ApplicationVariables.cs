@@ -5,14 +5,11 @@ using UnityEngine;
 
 public static class ApplicationVariables
 {
-  public static bool CanFight = true;
-  public static int LastRoundWinnerName = 0;
-
   public static class SceneNames
   {
     public static readonly string CharacterSelection = "CharacterSelection";
     public static readonly string[] ArenaLevels = {"ArenaTest1", "Player Testing"};
-    private static List<string> _arenasToLoad = new List<string>(ArenaLevels);
+    private static readonly List<string> _arenasToLoad = new List<string>(ArenaLevels);
 
     public static string GetNextArenaName()
     {
