@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public static class ApplicationVariables
@@ -8,6 +6,7 @@ public static class ApplicationVariables
   public static class SceneNames
   {
     public static readonly string CharacterSelection = "CharacterSelection";
+    public static readonly string WinScreen = "WinScreen";
     public static readonly string[] ArenaLevels = {"ArenaTest1", "Player Testing"};
     private static readonly List<string> _arenasToLoad = new List<string>(ArenaLevels);
 

@@ -2,16 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
 public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
 {
-  [SerializeField] private bool _canFight = true;
   [SerializeField] private int _timeToStart = 3;
   [SerializeField] private List<Transform> _spawnPointsList = new List<Transform>();
 
   private List<PlayerHealth> _playersList = new List<PlayerHealth>();
-  private List<PlayerHealth> _defeatedPlayersList = new List<PlayerHealth>();
+ // private List<PlayerHealth> _defeatedPlayersList = new List<PlayerHealth>();
 
   public event UnityAction<int> ArenaLoadEvent;
   public event UnityAction ArenaLoadCanceledEvent;
@@ -46,19 +44,33 @@ public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
 
   private void EndArena()
   {
-    GameManager.instance.EndRound(_playersList[0].PlayerNumber);
-    RespawnAllPlayers();
+    GameManager.instance.EndRound(_playersList[0]);
+    _playersList = FindObjectsOfType<PlayerHealth>(true).ToList();
 
-    if (GameManager.instance.GameWin) { return; }
+    if (GameManager.instance.GameWin) 
+    {
+      DestroyAllPlayers();
+      return; 
+    }
+
+    RespawnAllPlayers();
     ArenaLoadEvent?.Invoke(_timeToStart);
+  }
+
+  private void DestroyAllPlayers()
+  {
+    foreach (PlayerHealth player in _playersList)
+    {
+      player.gameObject.SetActive(false);
+      Destroy(player.gameObject);
+    }
   }
 
   private void RespawnAllPlayers()
   {
-    _defeatedPlayersList = FindObjectsOfType<PlayerHealth>(true).ToList();
-    foreach (PlayerHealth defeatedPlayer in _defeatedPlayersList)
+    foreach (PlayerHealth player in _playersList)
     {
-      defeatedPlayer.ResetHealth();
+      player.ResetHealth();
     }
   }
 

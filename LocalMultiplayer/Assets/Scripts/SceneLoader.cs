@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoader: MonoBehaviour
 {
   private IArenaLoadTrigger _arenaLoadTrigger;
-  private IEnumerator gameStartCoroutine;
+  private IEnumerator sceneLoadCoroutine;
   private bool isStoped;
 
   private void Awake()
@@ -40,8 +41,8 @@ public class SceneLoader: MonoBehaviour
   public void LoadLevelWithDelay(string sceneName, int delayTime)
   {
     isStoped = false;
-    gameStartCoroutine = DelayedLoad(sceneName, delayTime);
-    StartCoroutine(gameStartCoroutine);
+    sceneLoadCoroutine = DelayedLoad(sceneName, delayTime);
+    StartCoroutine(sceneLoadCoroutine);
   }
 
   IEnumerator DelayedLoad(string sceneName, int delayTime)
@@ -53,6 +54,11 @@ public class SceneLoader: MonoBehaviour
 
     if(!isStoped)
       LoadLevel(sceneName);
+  }
+
+  internal void LoadWinScreen(int delayTime)
+  {
+    LoadLevelWithDelay(ApplicationVariables.SceneNames.WinScreen, delayTime);
   }
 
   public void LoadLevel(string sceneName)
@@ -68,6 +74,6 @@ public class SceneLoader: MonoBehaviour
   public void OnArenaLoadCanceled()
   {
     isStoped = true;
-    StopCoroutine(gameStartCoroutine);
+    StopCoroutine(sceneLoadCoroutine);
   }
 }

@@ -5,15 +5,18 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-  [SerializeField]
-  private int _roundsToWinGame = 1;
+  [SerializeField] private int _roundsToWinGame = 1;
+  [SerializeField] private int _timeToLoadWinScreen = 3;
+
   public static GameManager instance;
 
-  public bool CanFight = false;
-  public bool GameWin = false;
-  public int RoundWinnerPlayerNumber = 0;
+  public bool CanFight { get; private set; } = false;
+  public bool GameWin { get; private set; } = false;
+  public int RoundWinnerPlayerNumber { get; private set; } = 0;
+  public Sprite WinnerSprite { get; private set; }
   
   private List<int> _roundWins = new List<int>();
+  
 
 
   private void Awake()
@@ -31,15 +34,18 @@ public class GameManager : MonoBehaviour
     _roundWins = Enumerable.Repeat(0, PlayerInputManager.instance.playerCount + 1).ToList();
   }
 
-  public void EndRound(int winnerPlayerNumber)
+  public void EndRound(PlayerHealth winnerPlayerHealth)
   {
-    RoundWinnerPlayerNumber = winnerPlayerNumber;
+    RoundWinnerPlayerNumber = winnerPlayerHealth.PlayerNumber;
     CanFight = false;
     _roundWins[RoundWinnerPlayerNumber]++;
 
     if (_roundWins[RoundWinnerPlayerNumber] != _roundsToWinGame) { return; }
 
     GameWin = true;
+    WinnerSprite = winnerPlayerHealth.GetComponent<SpriteRenderer>().sprite;
+    FindObjectOfType<SceneLoader>().LoadWinScreen(_timeToLoadWinScreen);
+
   }
 
   private void SetUpSingleton()

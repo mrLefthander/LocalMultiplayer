@@ -15,6 +15,7 @@ public class DamagePlayer: MonoBehaviour
   private bool IsTouchingPlayer(Collider2D other)
   {
     return _playerLayerMask == (_playerLayerMask | (1 << other.gameObject.layer));
+    
   }
 }
 
