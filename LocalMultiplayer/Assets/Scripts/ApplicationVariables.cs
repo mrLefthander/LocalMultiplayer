@@ -3,12 +3,23 @@ using UnityEngine;
 
 public static class ApplicationVariables
 {
+  public static class LayerNames
+  {
+    public static readonly LayerMask PlayerLayerMask = LayerMask.GetMask("Player");
+    public static readonly LayerMask GroundLayerMask = LayerMask.GetMask("Ground");
+
+    public static bool IsTouchingPlayer(int layer)
+    {
+      return PlayerLayerMask == (PlayerLayerMask | (1 << layer));
+    }
+  }
+
   public static class SceneNames
   {
     public static readonly string CharacterSelection = "CharacterSelection";
     public static readonly string WinScreen = "WinScreen";
     public static readonly string MainMenu = "MainMenu";
-    public static readonly string[] ArenaLevels = {"ArenaTest1", "Player Testing"};
+    public static readonly string[] ArenaLevels = { "ArenaTest2" }; //"ArenaTest1", "Player Testing",
     private static readonly List<string> _arenasToLoad = new List<string>(ArenaLevels);
 
     public static string GetNextArenaName()

@@ -6,7 +6,6 @@ public class CharacterSelectButton : MonoBehaviour
   private const float MINIMAL_VELOCITY_FOR_IN_JUMP_CHECK = -0.1f;
 
   [SerializeField] private Sprite _buttonUp, _buttonDown;
-  [SerializeField] private LayerMask _playerLayerMask;
   [SerializeField] private AnimatorOverrideController _animatorOverrideController;
 
   private bool _isPressed;
@@ -49,9 +48,7 @@ public class CharacterSelectButton : MonoBehaviour
 
   private void OnTriggerEnter2D(Collider2D other)
   {
-    bool isTriggeredByPlayer = _playerLayerMask == (_playerLayerMask | (1 << other.gameObject.layer));
-
-    if (!isTriggeredByPlayer || _isPressed) { return; }
+    if (!ApplicationVariables.LayerNames.IsTouchingPlayer(other.gameObject.layer) || _isPressed) { return; }
 
     float playerVelocityY = other.GetComponent<PlayerMovement>().GetVelocityY();
 
