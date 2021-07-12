@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public static class ApplicationVariables
@@ -8,8 +6,10 @@ public static class ApplicationVariables
   public static class SceneNames
   {
     public static readonly string CharacterSelection = "CharacterSelection";
+    public static readonly string WinScreen = "WinScreen";
+    public static readonly string MainMenu = "MainMenu";
     public static readonly string[] ArenaLevels = {"ArenaTest1", "Player Testing"};
-    private static List<string> _arenasToLoad = new List<string>(ArenaLevels);
+    private static readonly List<string> _arenasToLoad = new List<string>(ArenaLevels);
 
     public static string GetNextArenaName()
     {
@@ -27,7 +27,7 @@ public static class ApplicationVariables
 
   public static class AnimationNames
   {
-    public static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
+    public static readonly int IsGrounded = Animator.StringToHash("isGrounded");
     public static readonly int IsInvincible = Animator.StringToHash("isInvincible");
     public static readonly int YSpeed = Animator.StringToHash("ySpeed");
     public static readonly int XSpeed = Animator.StringToHash("xSpeed");

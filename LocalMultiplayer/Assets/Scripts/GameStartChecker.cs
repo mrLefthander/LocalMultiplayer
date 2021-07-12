@@ -21,6 +21,7 @@ public class GameStartChecker : MonoBehaviour, IArenaLoadTrigger
 
     _playersWasInStartZoneNumber = _playersInStartZoneNumber;
     _playersInStartZoneNumber = 0;
+
     ArenaLoadEvent?.Invoke(_timeToStart);
   }
 
@@ -44,6 +45,11 @@ public class GameStartChecker : MonoBehaviour, IArenaLoadTrigger
     _playersInStartZoneNumber--;
   }
 
+  public bool IsMaxPlayers()
+  {
+    return PlayerInputManager.instance.maxPlayerCount <= PlayerInputManager.instance.playerCount;
+  }
+
   private bool IsTriggeredByPlayer(Collider2D other)
   {
     return _playerLayerMask == (_playerLayerMask | (1 << other.gameObject.layer));
@@ -51,11 +57,16 @@ public class GameStartChecker : MonoBehaviour, IArenaLoadTrigger
 
   private bool IsAllPlayersInStartZone()
   {
-    return _playersInStartZoneNumber == PlayerInputManager.instance.playerCount;
+    return IsEqualToMaxPlayersCount(_playersInStartZoneNumber);
   }
 
   private bool IsAllPlayersWasInStartZone()
   {
-    return _playersWasInStartZoneNumber == PlayerInputManager.instance.playerCount;
+    return IsEqualToMaxPlayersCount(_playersWasInStartZoneNumber);
+  }
+
+  private bool IsEqualToMaxPlayersCount(int numberToCompare)
+  {
+    return numberToCompare == PlayerInputManager.instance.playerCount;
   }
 }
