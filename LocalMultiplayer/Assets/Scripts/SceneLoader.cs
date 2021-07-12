@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -17,25 +16,23 @@ public class SceneLoader: MonoBehaviour
 
   private void OnEnable()
   {
-    if (_arenaLoadTrigger != null)
-    {
-      _arenaLoadTrigger.ArenaLoadEvent += OnArenaLoad;
-      _arenaLoadTrigger.ArenaLoadCanceledEvent += OnArenaLoadCanceled;
-    }
+    if (_arenaLoadTrigger == null) { return; }
+
+    _arenaLoadTrigger.ArenaLoadEvent += OnArenaLoad;
+    _arenaLoadTrigger.ArenaLoadCanceledEvent += OnArenaLoadCanceled;
   }
 
   private void OnDisable()
   {
-    if (_arenaLoadTrigger != null)
-    {
-      _arenaLoadTrigger.ArenaLoadEvent -= OnArenaLoad;
-      _arenaLoadTrigger.ArenaLoadCanceledEvent -= OnArenaLoadCanceled;
-    }
+    if (_arenaLoadTrigger == null) { return; }
+
+    _arenaLoadTrigger.ArenaLoadEvent -= OnArenaLoad;
+    _arenaLoadTrigger.ArenaLoadCanceledEvent -= OnArenaLoadCanceled;
   }
 
-  public void QuitGame()
+  public void LoadLevel(string sceneName)
   {
-    Application.Quit();
+    SceneManager.LoadScene(sceneName);
   }
 
   public void LoadLevelWithDelay(string sceneName, int delayTime)
@@ -56,16 +53,6 @@ public class SceneLoader: MonoBehaviour
       LoadLevel(sceneName);
   }
 
-  internal void LoadWinScreen(int delayTime)
-  {
-    LoadLevelWithDelay(ApplicationVariables.SceneNames.WinScreen, delayTime);
-  }
-
-  public void LoadLevel(string sceneName)
-  {
-    SceneManager.LoadScene(sceneName);
-  }
-  
   public void OnArenaLoad(int delayTime)
   {
     LoadLevelWithDelay(ApplicationVariables.SceneNames.GetNextArenaName(), delayTime);
@@ -75,5 +62,27 @@ public class SceneLoader: MonoBehaviour
   {
     isStoped = true;
     StopCoroutine(sceneLoadCoroutine);
+  }
+
+  public void LoadWinScreen(int delayTime)
+  {
+    LoadLevelWithDelay(ApplicationVariables.SceneNames.WinScreen, delayTime);
+  }
+  
+  public void RestartGame()
+  {
+    GameManager.instance.DestroyGameManager();
+    LoadLevel(ApplicationVariables.SceneNames.CharacterSelection);
+  }
+
+  public void LoadMainMenu()
+  {
+    GameManager.instance.DestroyGameManager();
+    LoadLevel(ApplicationVariables.SceneNames.MainMenu);
+  }
+
+  public void QuitGame()
+  {
+    Application.Quit();
   }
 }

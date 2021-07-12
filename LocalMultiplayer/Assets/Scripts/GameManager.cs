@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
   public bool CanFight { get; private set; } = false;
   public bool GameWin { get; private set; } = false;
   public int RoundWinnerPlayerNumber { get; private set; } = 0;
-  public Sprite WinnerSprite { get; private set; }
+  public Sprite WinnerSprite { get; private set; } = null;
   
   private List<int> _roundWins = new List<int>();
   
@@ -42,10 +42,14 @@ public class GameManager : MonoBehaviour
 
     if (_roundWins[RoundWinnerPlayerNumber] != _roundsToWinGame) { return; }
 
+    EndGame(winnerPlayerHealth);
+  }
+
+  private void EndGame(PlayerHealth winnerPlayerHealth)
+  {
     GameWin = true;
     WinnerSprite = winnerPlayerHealth.GetComponent<SpriteRenderer>().sprite;
     FindObjectOfType<SceneLoader>().LoadWinScreen(_timeToLoadWinScreen);
-
   }
 
   private void SetUpSingleton()
@@ -61,5 +65,11 @@ public class GameManager : MonoBehaviour
       return;
     }
     DontDestroyOnLoad(gameObject);
+  }
+
+  public void DestroyGameManager()
+  {
+    instance = null;
+    Destroy(gameObject);
   }
 }
