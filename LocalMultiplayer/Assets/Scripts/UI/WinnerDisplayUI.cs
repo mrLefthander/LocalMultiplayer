@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
 
 public class WinnerDisplayUI: MonoBehaviour
 {
@@ -13,6 +10,8 @@ public class WinnerDisplayUI: MonoBehaviour
   private void Start()
   {
     _winnerText.text = "Player " + GameManager.instance.RoundWinnerPlayerNumber + " wins";
+
+    if(GameManager.instance.WinnerSprite == null) { return; }
     _winnerImage.sprite = GameManager.instance.WinnerSprite;
   }
 }
