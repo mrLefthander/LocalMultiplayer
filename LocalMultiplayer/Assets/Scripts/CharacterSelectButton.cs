@@ -5,7 +5,8 @@ public class CharacterSelectButton : MonoBehaviour
   private const float BUTTON_POPUP_TIME = 0.5f;
   private const float MINIMAL_VELOCITY_FOR_IN_JUMP_CHECK = -0.1f;
 
-  [SerializeField] private Sprite _buttonUp, _buttonDown;
+  [SerializeField] private Sprite _buttonUp;
+  [SerializeField] private Sprite _buttonDown;
   [SerializeField] private AnimatorOverrideController _animatorOverrideController;
 
   private bool _isPressed;
