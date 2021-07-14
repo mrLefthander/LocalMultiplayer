@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 91257777054485401}
   - component: {fileID: 91257777054485399}
   m_Layer: 0
-  m_Name: PlayerJoinManager
+  m_Name: pfPlayerJoinManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
