@@ -84,7 +84,7 @@ public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
       int randomSpawnPointsIndex = Random.Range(0, _spawnPointsList.Count);
       player.position = _spawnPointsList[randomSpawnPointsIndex].position;
 
-      if (isEnoughtSpawnPoints) { continue; }
+      if (!isEnoughtSpawnPoints) { continue; }
       _spawnPointsList.RemoveAt(randomSpawnPointsIndex);
     }
   }
