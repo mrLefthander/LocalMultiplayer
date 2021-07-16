@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerCollisionDetection))]
@@ -14,10 +13,13 @@ public class PlayerMovement : MonoBehaviour
   [SerializeField] private float _jumpForce = 21f;
   [SerializeField] private GameObject _playerSpawnEffect;
 
+  private float _initialMovementSpeed;
   private float _horizontalInput;
   private float _gracePeriodTimer;
   private float _wasGroundedTimer;
   private float _attackPauseTimer;
+  private float _movementSpeedChangeTimer;
+  
 
   private PlayerCollisionDetection _playerCollisionDetection;
   private PlayerInputEvents _playerInputEvents;
@@ -28,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
   {
     _playerCollisionDetection = GetComponent<PlayerCollisionDetection>();
     _playerInputEvents = GetComponent<PlayerInputEvents>();
+    _initialMovementSpeed = _movementSpeed;
 
     _rigidbody = GetComponent<Rigidbody2D>();
     DontDestroyOnLoad(gameObject);
@@ -43,6 +46,9 @@ public class PlayerMovement : MonoBehaviour
     CountDownTimer(ref _gracePeriodTimer);
     CountDownTimer(ref _wasGroundedTimer);
     CountDownTimer(ref _attackPauseTimer);
+    CountDownTimer(ref _movementSpeedChangeTimer);
+
+    ReturnToInitialMovementSpeedOnTimerEnd();
 
     if (_playerCollisionDetection.IsGrounded)
       _wasGroundedTimer = JUMP_GRACE_PERIOD;
@@ -98,6 +104,18 @@ public class PlayerMovement : MonoBehaviour
   private void Move()
   {
     _rigidbody.velocity = new Vector2(_horizontalInput * _movementSpeed, _rigidbody.velocity.y);
+  }
+
+  public void ChangeMovementSpeedForTime(float movementSpeed, float time)
+  {
+    _movementSpeed = movementSpeed;
+    _movementSpeedChangeTimer = time;
+  }
+
+  private void ReturnToInitialMovementSpeedOnTimerEnd()
+  {
+    if (_movementSpeedChangeTimer <= 0f && _movementSpeed != _initialMovementSpeed)
+      _movementSpeed = _initialMovementSpeed;
   }
 
   private void OnAttack()
