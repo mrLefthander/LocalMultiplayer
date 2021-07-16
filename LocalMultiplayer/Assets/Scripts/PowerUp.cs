@@ -8,7 +8,8 @@ public class PowerUp : MonoBehaviour
   [SerializeField] private bool _isHealth;
   [SerializeField] private bool _isInvincible;
   [SerializeField] private bool _isSpeed;
-  
+  [SerializeField] private bool _isGravity;
+
 
   private void OnTriggerEnter2D(Collider2D other)
   {
@@ -27,6 +28,11 @@ public class PowerUp : MonoBehaviour
       if (_isSpeed)
       {
         other.GetComponent<PlayerMovement>().ChangeMovementSpeedForTime(_powerUpPower, _powerUpTime);
+      }
+
+      if (_isGravity)
+      {
+
       }
 
       Instantiate(_powerUpEffect, transform.position, Quaternion.identity);
