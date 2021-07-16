@@ -62,13 +62,18 @@ public class PlayerHealth : MonoBehaviour
     if (_invincibilityTimer > 0f) { return; }
 
     _currentHealth -= amount;
-    _invincibilityTimer = INVINCIBILITY_TIME;
+    MakeInvincible(INVINCIBILITY_TIME);
     UpdateDisplay();
 
     if (_currentHealth >= 0) { return; }
 
     gameObject.SetActive(false);
     DeathEvent?.Invoke(this);
+  }
+
+  public void MakeInvincible(float invincibilityTime)
+  {
+    _invincibilityTimer = invincibilityTime;
   }
 
   public void ResetHealth()
