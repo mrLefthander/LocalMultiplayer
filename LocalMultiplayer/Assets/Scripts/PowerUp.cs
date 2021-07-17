@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PowerUp : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class PowerUp : MonoBehaviour
   [SerializeField] private bool _isInvincible;
   [SerializeField] private bool _isSpeed;
   [SerializeField] private bool _isGravity;
+
+  public event UnityAction<PowerUp> PickUpEvent = delegate { };
+  public SpawnPoint OccupiedSpawnPoint;
 
 
   private void OnTriggerEnter2D(Collider2D other)
@@ -32,12 +36,16 @@ public class PowerUp : MonoBehaviour
 
       if (_isGravity)
       {
-
+        other.GetComponent<PlayerMovement>().ChangeGravityScaleForTime(_powerUpPower, _powerUpTime);
       }
 
       Instantiate(_powerUpEffect, transform.position, Quaternion.identity);
       Destroy(gameObject);
     }
-    
+  }
+
+  private void OnDestroy()
+  {
+    PickUpEvent?.Invoke(this);
   }
 }
