@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PowerUpSpawner : MonoBehaviour
 {
+  private const string POWER_UPS_PARENT_GO_NAME = "PowerUps";
+
   [SerializeField] private float _minTimeToSpawnPowerUp = 8f;
   [SerializeField] private float _maxTimeToSpawnPowerUp = 12f;
   [SerializeField] private int _maxActivePowerUpsCount = 5;
@@ -25,7 +27,7 @@ public class PowerUpSpawner : MonoBehaviour
   {
     if (_powerUpsParent) { return; }
 
-    _powerUpsParent = new GameObject("PowerUps").transform;
+    _powerUpsParent = new GameObject(POWER_UPS_PARENT_GO_NAME).transform;
     _powerUpsParent.parent = transform;
   }
 

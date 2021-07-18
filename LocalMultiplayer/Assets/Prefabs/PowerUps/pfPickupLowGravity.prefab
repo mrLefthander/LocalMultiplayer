@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8005836534633091368}
   - component: {fileID: 8005836534633091369}
   - component: {fileID: 8005836534633091366}
-  - component: {fileID: 8005836534633091367}
+  - component: {fileID: 6081340745858362003}
   m_Layer: 9
   m_Name: pfPickupLowGravity
   m_TagString: Untagged
@@ -101,7 +101,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &8005836534633091367
+--- !u!114 &6081340745858362003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,13 +110,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8005836534633091364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f23e26cb041bd845b86d5d77c161fc1, type: 3}
+  m_Script: {fileID: 11500000, guid: f9d05c29ed1733e4d9d0a87ac7ccb501, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _powerUpEffect: {fileID: 2642507245385037895, guid: 7298ec14f531206458f28cb2207c994f, type: 3}
-  _powerUpTime: 8
-  _powerUpPower: 2.5
-  _isHealth: 0
-  _isInvincible: 0
-  _isSpeed: 0
-  _isGravity: 1
+  PowerUpTime: 8
+  PowerUpPower: 2.5
