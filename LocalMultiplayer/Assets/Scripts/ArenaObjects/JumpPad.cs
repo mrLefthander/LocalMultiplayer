@@ -31,6 +31,7 @@ public class JumpPad : MonoBehaviour
     _spriteRenderer.sprite = _upSprite;
     _buttonPopDownTimer = BUTTON_POPDOWN_TIME;
 
+    AudioManager.instance.PlaySound(Sound.Type.JumpPad);
     Rigidbody2D playerRigidbody = other.GetComponent<Rigidbody2D>();
     playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, _boucePower);
   }

@@ -44,6 +44,7 @@ public class CharacterSelectUI : MonoBehaviour
     for(int i = timeToCount; i >= 0; i--)
     {
       _countDownText.text = i.ToString();
+      AudioManager.instance.PlaySound(Sound.Type.Countdown);
       yield return new WaitForSeconds(1f);
     }
   }

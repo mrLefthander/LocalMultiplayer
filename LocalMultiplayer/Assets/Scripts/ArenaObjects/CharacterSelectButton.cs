@@ -55,6 +55,7 @@ public class CharacterSelectButton : MonoBehaviour
 
     if (playerVelocityY >= MINIMAL_VELOCITY_FOR_IN_JUMP_CHECK) { return; }
 
+    AudioManager.instance.PlaySound(Sound.Type.ButtonPress);
     _isPressed = true;
     _buttonPopUpTimer = BUTTON_POPUP_TIME;
     other.GetComponent<PlayerAnimations>().ChangeToPlayerAnimatorOverrideController(_animatorOverrideController);
