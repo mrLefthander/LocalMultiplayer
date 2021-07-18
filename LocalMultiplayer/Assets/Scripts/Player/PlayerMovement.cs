@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerCollisionDetection))]
@@ -14,10 +13,15 @@ public class PlayerMovement : MonoBehaviour
   [SerializeField] private float _jumpForce = 21f;
   [SerializeField] private GameObject _playerSpawnEffect;
 
+  private float _initialMovementSpeed;
+  private float _initialGravityScale;
   private float _horizontalInput;
   private float _gracePeriodTimer;
   private float _wasGroundedTimer;
   private float _attackPauseTimer;
+  private float _movementSpeedChangeTimer;
+  private float _gravityScaleTimer;
+
 
   private PlayerCollisionDetection _playerCollisionDetection;
   private PlayerInputEvents _playerInputEvents;
@@ -30,6 +34,10 @@ public class PlayerMovement : MonoBehaviour
     _playerInputEvents = GetComponent<PlayerInputEvents>();
 
     _rigidbody = GetComponent<Rigidbody2D>();
+
+    _initialMovementSpeed = _movementSpeed;
+    _initialGravityScale = _rigidbody.gravityScale;
+
     DontDestroyOnLoad(gameObject);
   }
   private void OnEnable()
@@ -43,6 +51,11 @@ public class PlayerMovement : MonoBehaviour
     CountDownTimer(ref _gracePeriodTimer);
     CountDownTimer(ref _wasGroundedTimer);
     CountDownTimer(ref _attackPauseTimer);
+    CountDownTimer(ref _movementSpeedChangeTimer);
+    CountDownTimer(ref _gravityScaleTimer);
+
+    ReturnToInitialMovementSpeedOnTimerEnd();
+    ReturnToInitialGravityScaleOnTimerEnd();
 
     if (_playerCollisionDetection.IsGrounded)
       _wasGroundedTimer = JUMP_GRACE_PERIOD;
@@ -98,6 +111,28 @@ public class PlayerMovement : MonoBehaviour
   private void Move()
   {
     _rigidbody.velocity = new Vector2(_horizontalInput * _movementSpeed, _rigidbody.velocity.y);
+  }
+
+  public void ChangeMovementSpeedForTime(float movementSpeed, float time)
+  {
+    _movementSpeed = movementSpeed;
+    _movementSpeedChangeTimer = time;
+  }
+  private void ReturnToInitialMovementSpeedOnTimerEnd()
+  {
+    if (_movementSpeedChangeTimer <= 0f && _movementSpeed != _initialMovementSpeed)
+      _movementSpeed = _initialMovementSpeed;
+  }
+
+  public void ChangeGravityScaleForTime(float gravityScale, float time)
+  {
+    _rigidbody.gravityScale = gravityScale;
+    _gravityScaleTimer = time;
+  }
+  private void ReturnToInitialGravityScaleOnTimerEnd()
+  {
+    if (_gravityScaleTimer <= 0f && _rigidbody.gravityScale != _initialGravityScale)
+      _rigidbody.gravityScale = _initialGravityScale;
   }
 
   private void OnAttack()
