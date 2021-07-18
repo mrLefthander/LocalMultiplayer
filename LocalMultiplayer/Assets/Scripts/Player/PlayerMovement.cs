@@ -43,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
   private void OnEnable()
   {
     Instantiate(_playerSpawnEffect, transform.position, Quaternion.identity);
+    AudioManager.instance.PlaySound(Sound.Type.Portal);
     SubscribeForEvents();
   }
   
@@ -88,12 +89,12 @@ public class PlayerMovement : MonoBehaviour
   }
   private void Jump()
   {
-    if (_gracePeriodTimer > 0f && _wasGroundedTimer > 0f)
-    {
-      _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
-      _gracePeriodTimer = 0f;
-      _wasGroundedTimer = 0f;
-    }
+    if (_gracePeriodTimer <= 0f || _wasGroundedTimer <= 0f) { return; }
+
+    AudioManager.instance.PlaySound(Sound.Type.Bounce);
+    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
+    _gracePeriodTimer = 0f;
+    _wasGroundedTimer = 0f;
   }
 
   public void OnJumpCanceled()
@@ -137,6 +138,7 @@ public class PlayerMovement : MonoBehaviour
 
   private void OnAttack()
   {
+    AudioManager.instance.PlaySound(Sound.Type.Attack);
     _attackPauseTimer = ON_ATTACK_MOVEMENT_PAUSE_PERIOD;
   }
 

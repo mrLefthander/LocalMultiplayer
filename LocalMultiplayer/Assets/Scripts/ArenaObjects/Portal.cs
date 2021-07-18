@@ -10,6 +10,7 @@ public class Portal : MonoBehaviour
   {
     if (!ApplicationVariables.LayerNames.IsTouchingPlayer(other.gameObject.layer)) { return; }
 
+    AudioManager.instance.PlaySound(Sound.Type.Portal);
     Vector3 randomExitPosition = _exitPoints[Random.Range(0, _exitPoints.Count)].position;
     other.transform.position = randomExitPosition;
     Instantiate(_portalExitEffect, randomExitPosition, Quaternion.identity);

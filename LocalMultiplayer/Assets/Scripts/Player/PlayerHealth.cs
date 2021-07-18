@@ -62,11 +62,13 @@ public class PlayerHealth : MonoBehaviour
     if (_invincibilityTimer > 0f) { return; }
 
     _currentHealth -= amount;
+    AudioManager.instance.PlaySound(Sound.Type.Hit);
     MakeInvincible(INVINCIBILITY_TIME);
     UpdateDisplay();
 
     if (_currentHealth >= 0) { return; }
 
+    AudioManager.instance.PlaySound(Sound.Type.Death);
     gameObject.SetActive(false);
     DeathEvent?.Invoke(this);
   }
