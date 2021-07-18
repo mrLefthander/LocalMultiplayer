@@ -5,11 +5,10 @@ using UnityEngine.Events;
 
 public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
 {
-  [SerializeField] private int _timeToStart = 3;
-  [SerializeField] private List<Transform> _spawnPointsList = new List<Transform>();
-
+  [SerializeField] private int _timeToStartNextLevel = 3;  
+  
+  private List<Transform> _spawnPointsList = new List<Transform>();
   private List<PlayerHealth> _playersList = new List<PlayerHealth>();
- // private List<PlayerHealth> _defeatedPlayersList = new List<PlayerHealth>();
 
   public event UnityAction<int> ArenaLoadEvent;
   public event UnityAction ArenaLoadCanceledEvent;
@@ -18,10 +17,18 @@ public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
   {
     _playersList = FindObjectsOfType<PlayerHealth>().ToList();
 
+    GetArenaSpawnPoints();
     SubscribeOnPlayersDeath();
 
     GameManager.instance.StartRound();
     SpawnPlayersOnRandomPoints();
+  }
+
+  private void GetArenaSpawnPoints()
+  {
+    if (_spawnPointsList.Count != 0) { return; }
+
+    _spawnPointsList = GetComponentsInChildren<SpawnPoint>().Select(p => p.transform).ToList();
   }
 
   private void SubscribeOnPlayersDeath()
@@ -54,7 +61,7 @@ public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
     }
 
     RespawnAllPlayers();
-    ArenaLoadEvent?.Invoke(_timeToStart);
+    ArenaLoadEvent?.Invoke(_timeToStartNextLevel);
   }
 
   private void DestroyAllPlayers()
@@ -76,13 +83,13 @@ public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
 
   private void SpawnPlayersOnRandomPoints()
   {
-    List<Transform> playersTransformList = _playersList.Select(p => p.gameObject.transform).ToList();
+    List<Transform> playersTransformList = _playersList.Select(p => p.transform).ToList();
     bool isEnoughtSpawnPoints = _spawnPointsList.Count >= _playersList.Count;
 
     foreach (Transform player in playersTransformList)
     {
       int randomSpawnPointsIndex = Random.Range(0, _spawnPointsList.Count);
-      player.position = _spawnPointsList[randomSpawnPointsIndex].position;
+      player.position = _spawnPointsList[randomSpawnPointsIndex].transform.position;
 
       if (!isEnoughtSpawnPoints) { continue; }
       _spawnPointsList.RemoveAt(randomSpawnPointsIndex);

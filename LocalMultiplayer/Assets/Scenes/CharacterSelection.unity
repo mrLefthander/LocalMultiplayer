@@ -11351,9 +11351,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buttonUp: {fileID: 8661651960862297898, guid: adcb5fae9aa0a804c860037bd1c6ff1c, type: 3}
   _buttonDown: {fileID: 734368628706365288, guid: adcb5fae9aa0a804c860037bd1c6ff1c, type: 3}
-  _playerLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
   _animatorOverrideController: {fileID: 22100000, guid: c0a37c493d96cc34dab79a75e4cd989a, type: 2}
 --- !u!1 &1849268958
 GameObject:
