@@ -102,6 +102,8 @@ MonoBehaviour:
       remapped: 19
     - original: 1
       remapped: 1
+    - original: 60
+      remapped: 60
   - name: numpad
     routes:
     - original: 37

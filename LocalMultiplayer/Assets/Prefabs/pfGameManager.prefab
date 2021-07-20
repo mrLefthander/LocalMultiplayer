@@ -43,7 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db627f43b17937e4eaa766ee7ddd04ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _roundsToWinGame: 1
-  CanFight: 0
-  GameWin: 0
-  RoundWinnerPlayerNumber: 0
+  _roundsToWinGame: 2
+  _timeToLoadWinScreen: 3

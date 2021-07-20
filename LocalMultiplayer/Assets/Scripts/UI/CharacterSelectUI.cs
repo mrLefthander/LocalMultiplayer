@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using TMPro;
 
 public class CharacterSelectUI : MonoBehaviour
@@ -25,11 +24,12 @@ public class CharacterSelectUI : MonoBehaviour
   private void OnDisable()
   {
     _gameStartChecker.ArenaLoadEvent -= OnGameStart;
+    _gameStartChecker.ArenaLoadCanceledEvent -= OnGameStartCanceled;
   }
 
   public void OnGameStart(int delayTime)
   {
-    _countDownText.gameObject.SetActive(true);
+    //_countDownText.gameObject.SetActive(true);
     gameStartCoroutine = CountDownStartCounter(delayTime);
     StartCoroutine(gameStartCoroutine);
   }
@@ -41,11 +41,12 @@ public class CharacterSelectUI : MonoBehaviour
 
   IEnumerator CountDownStartCounter(int timeToCount)
   {
-    for(int i = timeToCount; i >= 0; i--)
+    for (int i = timeToCount; i > 0; i--)
     {
+      yield return new WaitForSeconds(1f);
+      _countDownText.gameObject.SetActive(true);
       _countDownText.text = i.ToString();
       AudioManager.instance.PlaySound(Sound.Type.Countdown);
-      yield return new WaitForSeconds(1f);
     }
   }
 }

@@ -85,12 +85,13 @@ public class PlayerMovement : MonoBehaviour
 
   public void OnJump()
   {
+    if (GameManager.instance.IsPaused) { return; }
     _gracePeriodTimer = JUMP_GRACE_PERIOD;
   }
   private void Jump()
   {
     if (_gracePeriodTimer <= 0f || _wasGroundedTimer <= 0f) { return; }
-
+   
     AudioManager.instance.PlaySound(Sound.Type.Bounce);
     _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
     _gracePeriodTimer = 0f;
@@ -138,6 +139,8 @@ public class PlayerMovement : MonoBehaviour
 
   private void OnAttack()
   {
+    if (GameManager.instance.IsPaused) { return; }
+
     AudioManager.instance.PlaySound(Sound.Type.Attack);
     _attackPauseTimer = ON_ATTACK_MOVEMENT_PAUSE_PERIOD;
   }

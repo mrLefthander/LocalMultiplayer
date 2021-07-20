@@ -29,6 +29,11 @@ public class PlayerAnimations : MonoBehaviour
 
   private void Update()
   {
+    if (GameManager.instance.IsPaused) 
+    {
+      _animator.StopPlayback();
+    }
+   // _animator.StartPlayback();
     _animator.SetBool(ApplicationVariables.AnimationNames.IsGrounded, _playerCollisionDetection.IsGrounded);
     _animator.SetFloat(ApplicationVariables.AnimationNames.YSpeed, _rigidbody.velocity.y);
   }
@@ -41,11 +46,14 @@ public class PlayerAnimations : MonoBehaviour
 
   private void OnAttackAnimation()
   {
+    if (GameManager.instance.IsPaused) { return; }
+    
     _animator.SetTrigger(ApplicationVariables.AnimationNames.Attack);
   }
 
   private void OnMoveAnimation(float dirrection)
   {
+    if (GameManager.instance.IsPaused) { return; }
     _animator.SetFloat(ApplicationVariables.AnimationNames.XSpeed, Mathf.Abs(dirrection));
     FlipSprite(dirrection);
   }

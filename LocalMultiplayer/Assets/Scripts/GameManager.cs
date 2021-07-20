@@ -2,26 +2,29 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-  [SerializeField] private int _roundsToWinGame = 1;
+  [SerializeField] private int _roundsToWinGame = 2;
   [SerializeField] private int _timeToLoadWinScreen = 3;
+
 
   public static GameManager instance;
 
+  public bool IsPaused { get; private set; } = false;
   public bool CanFight { get; private set; } = false;
   public bool GameWin { get; private set; } = false;
   public int RoundWinnerPlayerNumber { get; private set; } = 0;
   public Sprite WinnerSprite { get; private set; } = null;
-  
+  public event UnityAction<int> GameEndEvent;
+
   private List<int> _roundWins = new List<int>();
   
-
-
   private void Awake()
   {
     SetUpSingleton();
+    ResumeGame();
   }
 
   public void StartRound()
@@ -49,7 +52,22 @@ public class GameManager : MonoBehaviour
   {
     GameWin = true;
     WinnerSprite = winnerPlayerHealth.GetComponent<SpriteRenderer>().sprite;
-    FindObjectOfType<SceneLoader>().LoadWinScreen(_timeToLoadWinScreen);
+    GameEndEvent?.Invoke(_timeToLoadWinScreen);
+    //FindObjectOfType<SceneLoader>().LoadWinScreen(_timeToLoadWinScreen);
+  }
+
+  public void PauseGame()
+  {
+    IsPaused = true;
+    AudioListener.pause = true;
+    Time.timeScale = 0f;
+  }
+
+  public void ResumeGame()
+  {
+    IsPaused = false;
+    AudioListener.pause = false;
+    Time.timeScale = 1f;
   }
 
   private void SetUpSingleton()
@@ -69,6 +87,8 @@ public class GameManager : MonoBehaviour
 
   public void DestroyGameManager()
   {
+    Destroy(PlayerInputManager.instance.gameObject);
+
     instance = null;
     Destroy(gameObject);
   }

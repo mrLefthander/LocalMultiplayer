@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1378451835}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &448154882
@@ -5703,6 +5703,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _winnerText: {fileID: 1504756231}
   _winnerImage: {fileID: 1179737353}
+--- !u!1 &1378451835 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8060383410516686823, guid: a2fe54ed200472049aee6fc4fab8cc23, type: 3}
+  m_PrefabInstance: {fileID: 8060383412000718200}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1504756229
 GameObject:
   m_ObjectHideFlags: 0

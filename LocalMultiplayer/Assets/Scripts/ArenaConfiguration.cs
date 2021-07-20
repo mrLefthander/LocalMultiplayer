@@ -64,8 +64,10 @@ public class ArenaConfiguration : MonoBehaviour, IArenaLoadTrigger
     ArenaLoadEvent?.Invoke(_timeToStartNextLevel);
   }
 
-  private void DestroyAllPlayers()
+  public void DestroyAllPlayers()
   {
+    if(_playersList.Count == 0 || _playersList == null) { return; }
+
     foreach (PlayerHealth player in _playersList)
     {
       player.gameObject.SetActive(false);
