@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: a9c47aee7a765634ca8b25b24a438476
+  - enabled: 1
     path: Assets/Scenes/CharacterSelection.unity
     guid: 460a30805fe063d4d92a29c65f676b25
   - enabled: 1
@@ -15,13 +18,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Arenas/ArenaTest1.unity
     guid: e5b2797f1e46ef04e97fc79d519877a8
   - enabled: 1
-    path: Assets/Scenes/WinScreen.unity
-    guid: 4fd4a2d2c2dc82947a0212888ebeea22
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: a9c47aee7a765634ca8b25b24a438476
-  - enabled: 1
     path: Assets/Scenes/Arenas/ArenaTest2.unity
     guid: 6d520e63252573e499e85954e7484ce0
+  - enabled: 1
+    path: Assets/Scenes/WinScreen.unity
+    guid: 4fd4a2d2c2dc82947a0212888ebeea22
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 20972e45e71f4aa4eb304e4283879830, type: 2}

@@ -50,7 +50,7 @@ MonoBehaviour:
     Volume: 1
   - SoundName: 1
     Clip: {fileID: 8300000, guid: d74528a94a4d8f94bbd351686d97dfd5, type: 3}
-    Volume: 0.4
+    Volume: 0.2
   - SoundName: 2
     Clip: {fileID: 8300000, guid: 199de40e82af31640a203f7c66d8d848, type: 3}
     Volume: 1

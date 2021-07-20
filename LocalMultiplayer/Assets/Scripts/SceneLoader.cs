@@ -16,6 +16,9 @@ public class SceneLoader: MonoBehaviour
 
   private void OnEnable()
   {
+    if(GameManager.instance != null)
+      GameManager.instance.GameEndEvent += LoadWinScreen;
+
     if (_arenaLoadTrigger == null) { return; }
 
     _arenaLoadTrigger.ArenaLoadEvent += OnArenaLoad;
@@ -24,6 +27,9 @@ public class SceneLoader: MonoBehaviour
 
   private void OnDisable()
   {
+    if (GameManager.instance != null)
+      GameManager.instance.GameEndEvent -= LoadWinScreen;
+
     if (_arenaLoadTrigger == null) { return; }
 
     _arenaLoadTrigger.ArenaLoadEvent -= OnArenaLoad;
@@ -71,13 +77,14 @@ public class SceneLoader: MonoBehaviour
   
   public void RestartGame()
   {
-    GameManager.instance.DestroyGameManager();
+    GameManager.instance?.DestroyGameManager();
     LoadLevel(ApplicationVariables.SceneNames.CharacterSelection);
   }
 
   public void LoadMainMenu()
   {
-    GameManager.instance.DestroyGameManager();
+    FindObjectOfType<ArenaConfiguration>()?.DestroyAllPlayers();
+    GameManager.instance?.DestroyGameManager();
     LoadLevel(ApplicationVariables.SceneNames.MainMenu);
   }
 
